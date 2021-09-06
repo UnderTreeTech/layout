@@ -1,0 +1,8 @@
+# Develop tools
+.vscode/
+.idea/
+*.swp
+
+# OS General
+Thumbs.db
+.DS_Store
