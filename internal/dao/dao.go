@@ -60,9 +60,8 @@ func (d *dao) Ping(ctx context.Context) error {
 		return err
 	}
 
-	if _, err := d.redis.Ping(ctx); err != nil {
-		log.Error(ctx, "ping redis fail", log.String("error", err.Error()))
-		return err
+	if alive := d.redis.Ping(ctx); !alive {
+		return errors.New("redis has gone")
 	}
 
 	return nil
