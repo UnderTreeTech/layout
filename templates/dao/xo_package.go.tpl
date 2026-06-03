@@ -6,11 +6,11 @@ import (
 	"context"
 	"errors"
     "fmt"
-    "layout/internal/model"
+    "github.com/UnderTreeTech/layout/internal/model"
 
     "github.com/Masterminds/squirrel"
     "github.com/UnderTreeTech/waterdrop/pkg/database/sql"
     "github.com/UnderTreeTech/waterdrop/pkg/log"
 
-     "w.src.corp.qihoo.net/ccwork/api/utils/parser"
+    "github.com/UnderTreeTech/layout/internal/utils/parser"
 )
