@@ -9,8 +9,8 @@ github.com/Masterminds/squirrel v1.4.0 h1:he5i/EXixZxrBUWcxzDYMiju9WZ3ld/l7QBNuo
 github.com/Masterminds/squirrel v1.4.0/go.mod h1:yaPeOnPG5ZRwL9oKdTsO/prlkPbXWZlRVMQ/gGlzIuA=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d h1:G0m3OIz70MZUWq3EgK3CesDbo8upS2Vm9/P3FtgI+Jk=
 github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
-github.com/UnderTreeTech/drivers v0.0.0-20260603130416-366ec9b36fe8 h1:vg6aVbPGWVwuuvrh1I8Q3yDi93WaVInuFibtCXq46UM=
-github.com/UnderTreeTech/drivers v0.0.0-20260603130416-366ec9b36fe8/go.mod h1:TuhfFZWiZk7PMa3J5qvAYyPwNqaTKUloAzj2qhoMrZM=
+github.com/UnderTreeTech/drivers v0.0.0-20260603151246-98d847194676 h1:iGei5n7w2L88pRd0XvYbunxt9FFK3/ECD+5Ua+r6VCI=
+github.com/UnderTreeTech/drivers v0.0.0-20260603151246-98d847194676/go.mod h1:+KTh3r8/oVSLYKRcjOooAN4U7hwueGPi+0PWUcGJNlc=
 github.com/UnderTreeTech/waterdrop v1.3.7-0.20260603105759-3e36cc10496d h1:Ag62DiTcbmpnQfDrcOt/Xn6LrXjH4RpFnJpyXT0/j1Q=
 github.com/UnderTreeTech/waterdrop v1.3.7-0.20260603105759-3e36cc10496d/go.mod h1:RrubYS5sfwLNLFsmnuECVrUUdNTx9K9JfZJs6BD3vVI=
 github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc/go.mod h1:LOuyumcjzFXgccqObfd/Ljyb9UuFJ6TxHnclSeseNhc=

@@ -19,7 +19,7 @@ func (d *dao) Add{{ .Name }}(ctx context.Context, {{$short}} *model.{{.Name}}) (
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -59,7 +59,7 @@ func (d *dao) BatchAdd{{ .Name }}s(ctx context.Context, list []*model.{{.Name}})
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -88,7 +88,7 @@ func (d *dao) Edit{{ .Name }}(ctx context.Context, setMap map[string]interface{}
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -115,7 +115,7 @@ func (d *dao)  Delete{{ .Name }}(ctx context.Context,condition map[string]interf
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -154,7 +154,7 @@ func (d *dao)  Find{{ .Name }}(ctx context.Context, condition map[string]interfa
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -197,7 +197,7 @@ func (d *dao)  Find{{ .Name }}s(ctx context.Context, condition map[string]interf
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }
@@ -246,7 +246,7 @@ func (d *dao)  Count{{ .Name }}(ctx context.Context, condition map[string]interf
     }
 
     // parse sql to adapter databases
-    sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+    sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
     if err != nil {
        return
     }

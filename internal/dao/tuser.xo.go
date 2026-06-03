@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"github.com/UnderTreeTech/layout/internal/model"
 
-	"github.com/UnderTreeTech/layout/internal/utils/parser"
+	"github.com/UnderTreeTech/drivers"
 
 	"github.com/Masterminds/squirrel"
 	"github.com/UnderTreeTech/waterdrop/pkg/database/sql"
@@ -30,7 +30,7 @@ func (d *dao) AddTUser(ctx context.Context, tu *model.TUser) (err error) {
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -70,7 +70,7 @@ func (d *dao) BatchAddTUsers(ctx context.Context, list []*model.TUser) (err erro
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -102,7 +102,7 @@ func (d *dao) EditTUser(ctx context.Context, setMap map[string]interface{}, cond
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -134,7 +134,7 @@ func (d *dao) DeleteTUser(ctx context.Context, condition map[string]interface{})
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -173,7 +173,7 @@ func (d *dao) FindTUser(ctx context.Context, condition map[string]interface{}) (
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -216,7 +216,7 @@ func (d *dao) FindTUsers(ctx context.Context, condition map[string]interface{}) 
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -271,7 +271,7 @@ func (d *dao) CountTUser(ctx context.Context, condition map[string]interface{}) 
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
@@ -303,7 +303,7 @@ func (d *dao) BatchCountTUser(ctx context.Context, groupKey string, condition ma
 	}
 
 	// parse sql to adapter databases
-	sqlStr, err = parser.QuoteSQL(d.driver, sqlStr)
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}

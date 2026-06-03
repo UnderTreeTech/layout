@@ -5,15 +5,13 @@ go 1.25.0
 require (
 	gitee.com/opengauss/openGauss-connector-go-pq v1.0.4
 	github.com/Masterminds/squirrel v1.4.0
-	github.com/UnderTreeTech/drivers v0.0.0-20260603130416-366ec9b36fe8
+	github.com/UnderTreeTech/drivers v0.0.0-20260603151246-98d847194676
 	github.com/UnderTreeTech/waterdrop v1.3.7-0.20260603105759-3e36cc10496d
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/microcosm-cc/bluemonday v1.0.27
-	github.com/pingcap/tidb/pkg/parser v0.0.0-20231124053542-069631e2ecfe
-	github.com/valyala/bytebufferpool v1.0.0
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
 )
@@ -66,6 +64,7 @@ require (
 	github.com/pingcap/errors v0.11.5-0.20210425183316-da1aaba5fb63 // indirect
 	github.com/pingcap/failpoint v0.0.0-20220801062533-2eaa32854a6c // indirect
 	github.com/pingcap/log v1.1.0 // indirect
+	github.com/pingcap/tidb/pkg/parser v0.0.0-20231124053542-069631e2ecfe // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/prometheus/client_golang v1.11.1 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
@@ -83,6 +82,7 @@ require (
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	github.com/ugorji/go/codec v1.3.1 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.2.0 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
