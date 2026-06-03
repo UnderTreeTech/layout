@@ -1,44 +1,34 @@
 package service
 
 import (
-	"fmt"
-
-	"github.com/UnderTreeTech/layout/api/demo"
 	"github.com/UnderTreeTech/layout/internal/dao"
-
-	"github.com/UnderTreeTech/waterdrop/pkg/conf"
-	"github.com/UnderTreeTech/waterdrop/pkg/server/http/client"
-	"github.com/UnderTreeTech/waterdrop/pkg/server/http/config"
-	rpcClient "github.com/UnderTreeTech/waterdrop/pkg/server/rpc/client"
-	rpcConfig "github.com/UnderTreeTech/waterdrop/pkg/server/rpc/config"
 )
 
-type Service struct {
-	dao  dao.Dao
-	demo demo.DemoClient
-	http *client.Client
+type Config struct {
+	MaxIdPoolNum int
+	// 是否开启debug调试验签接口
+	DebugMode bool
 }
 
-func New(d dao.Dao) *Service {
-	cliConf := &rpcConfig.ClientConfig{}
-	if err := conf.Unmarshal("client.rpc.demo", cliConf); err != nil {
-		panic(fmt.Sprintf("unmarshal demo client config fail, err msg %s", err.Error()))
-	}
-	rpc := demo.NewDemoClient(rpcClient.New(cliConf).GetConn())
+type Service struct {
+	cfg *Config
+	dao dao.Dao
+}
 
-	httpCliConf := &config.ClientConfig{}
-	if err := conf.Unmarshal("client.http.app", httpCliConf); err != nil {
-		panic(fmt.Sprintf("unmarshal http client config fail, err msg %s", err.Error()))
-	}
-	httpCli := client.New(httpCliConf)
+func New(d dao.Dao, cfg *Config) *Service {
 
-	return &Service{
-		dao:  d,
-		http: httpCli,
-		demo: rpc,
+	svc := &Service{
+		dao: d,
+		cfg: cfg,
 	}
+
+	return svc
 }
 
 func (s *Service) Close() {
 	s.dao.Close()
+}
+
+func (s *Service) Ping() {
+
 }

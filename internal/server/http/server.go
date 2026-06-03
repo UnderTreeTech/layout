@@ -18,6 +18,20 @@ import (
 	"github.com/UnderTreeTech/waterdrop/pkg/utils/xnet"
 
 	"github.com/UnderTreeTech/waterdrop/pkg/registry"
+
+	"github.com/UnderTreeTech/layout/internal/server/http/middlewares/cors"
+	"github.com/UnderTreeTech/layout/internal/server/http/middlewares/sanitizer"
+	"github.com/UnderTreeTech/layout/internal/utils"
+	"github.com/UnderTreeTech/layout/internal/utils/reply"
+
+	"strconv"
+
+	"net/http"
+
+	"github.com/UnderTreeTech/waterdrop/pkg/log"
+	"github.com/UnderTreeTech/waterdrop/pkg/trace"
+	"github.com/gin-gonic/gin"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type ServerInfo struct {
@@ -25,7 +39,15 @@ type ServerInfo struct {
 	ServiceInfo *registry.ServiceInfo
 }
 
-var svc *service.Service
+var (
+	svc        *service.Service
+	sanitize   *sanitizer.Sanitizer
+	emptyReply = &emptypb.Empty{}
+)
+
+func init() {
+	sanitize = sanitizer.NewSanitizer()
+}
 
 func New(s *service.Service) *ServerInfo {
 	srvConfig := &config.ServerConfig{}
@@ -37,9 +59,12 @@ func New(s *service.Service) *ServerInfo {
 	}
 
 	server := server.New(srvConfig)
+	gin.EnableJsonDecoderUseNumber()
+	svc = s
+
 	registerMiddlewares(server)
 	router(server)
-	svc = s
+
 	addr := server.Start()
 	_, port, _ := net.SplitHostPort(addr.String())
 	serviceInfo := &registry.ServiceInfo{
@@ -52,6 +77,32 @@ func New(s *service.Service) *ServerInfo {
 	return &ServerInfo{Server: server, ServiceInfo: serviceInfo}
 }
 
+// ShouldBind 此方法返回的error不需要在输出到客户端,内部已经有了ctx.JSON() 处理
+func ShouldBind(ctx *gin.Context, req interface{}) (err error) {
+	if err = ctx.ShouldBind(req); err != nil {
+		var errmsg string
+		if errs, ok := err.(validator.ValidationErrors); ok {
+			errmsg = utils.TranslateError(ctx, errs)
+		} else {
+			errmsg = err.Error()
+		}
+
+		// Reply StatusBadRequest
+		validateResp := &reply.Response{
+			Code:    strconv.Itoa(http.StatusBadRequest),
+			Message: errmsg,
+			TransId: trace.TraceID(ctx.Request.Context()),
+		}
+		ctx.JSON(http.StatusOK, validateResp)
+		return
+	}
+
+	log.Info(ctx.Request.Context(), "request params", log.String("path", ctx.Request.URL.Path), log.Any("req", req))
+	// clean xss attack
+	sanitize.Sanitize(ctx, req)
+	return
+}
+
 func parseConfig(configName string, srvConfig *config.ServerConfig) {
 	if err := conf.Unmarshal(configName, srvConfig); err != nil {
 		panic(fmt.Sprintf("unmarshal http server config fail, err msg %s", err.Error()))
@@ -60,11 +111,9 @@ func parseConfig(configName string, srvConfig *config.ServerConfig) {
 
 func registerMiddlewares(s *server.Server) {
 	//	register middleware here
+	s.Use(cors.Cors())
 }
 
 func router(s *server.Server) {
-	g := s.Group("/api")
-	{
-		g.GET("/app/user/:id", getUserInfo)
-	}
+	registerAPI(s.Engine)
 }

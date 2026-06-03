@@ -51,14 +51,19 @@ func main() {
 	etcd := etcd.New(etcdCfg)
 	resolver.Register(etcd)
 
+	svcCfg := &service.Config{}
+	if err := conf.Unmarshal("service", svcCfg); err != nil {
+		panic(fmt.Sprintf("unmarshal service config fail, err msg %s", err.Error()))
+	}
 	dao := dao.New()
-	s := service.New(dao)
+	s := service.New(dao, svcCfg)
+
 	http := http.New(s)
 	rpc := grpc.New(s)
 
 	etcd.Register(context.Background(), rpc.ServiceInfo)
 	etcd.Register(context.Background(), http.ServiceInfo)
-	si, err := stats.StartStats()
+	si, err := stats.StartStats("service.demo.v1")
 	if err != nil {
 		panic(fmt.Sprintf("start stats fail, err msg is %s", err.Error()))
 	}

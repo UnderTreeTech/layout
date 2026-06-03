@@ -1,3 +1,6 @@
+[service]
+    maxIdPoolNum = 100
+
 [server]
     [server.rpc]
         addr = "0.0.0.0:0"
@@ -23,7 +26,6 @@
             key = "xHf74ZfV43cAUsUl"
             secret = "d0dbe915091d400bd8ee7f27f0791303"
             dialTimeout = "10s"
-            block = false
             balancer = "round_robin"
             target = "etcd://default/service.demo.v1"
             timeout = "500ms"
@@ -41,21 +43,52 @@
             key = "xHf74ZfV43cAUsUl"
             secret = "d0dbe915091d400bd8ee7f27f0791303"
 
-[mysql]
-    dbName = "test"
-    driverName = "mysql"
-    dsn = "root@tcp(127.0.0.1:3306)/test?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"
-    readDSN = ["root@tcp(127.0.0.1:3306)/test?timeout=1s&readTimeout=1s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"]
+[db]
+    dbName = "layout"
     active = 20
-    idle = 10
+    idle = 2
     idleTimeout ="4h"
-    queryTimeout = "200ms"
-    execTimeout = "300ms"
-    tranTimeout = "400ms"
-    slowQueryDuration = "250ms"
+    queryTimeout = "1s"
+    execTimeout = "1s"
+    tranTimeout = "1s"
+    slowQueryDuration = "500ms"
+    #   MYSQL
+    driverName = "mysql"
+    dsn = "root:root123@tcp(127.0.0.1:3306)/layout?timeout=10s&readTimeout=10s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"
+    readDSN = ["root:root123@tcp(127.0.0.1:3306)/layout?timeout=10s&readTimeout=10s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"]
+
+    #    Kingbase 人大金仓
+    #    driverName = "kingbase"
+    #    dsn = "kingbase://system:kingbase@127.0.0.1:54321/layout?sslmode=disable"
+    #    readDSN = ["kingbase://system:kingbase@127.0.0.1:54321/layout?sslmode=disable"]
+
+    #    DM 达梦
+    #    driverName = "dm"
+    #    dsn = "dm://SYSDBA:SYSDBA@127.0.0.1:5236?schema=\"layout\""
+    #    readDSN = ["dm://SYSDBA:SYSDBA@127.0.0.1:5236?schema=\"layout\""]
+
+    #    Postgres
+    #    driverName = "postgres"
+    #    dsn = "postgres://kookk:kookk@127.0.0.1:5432/layout?sslmode=disable"
+    #    readDSN = ["postgres://kookk:kookk@127.0.0.1:5432/layout?sslmode=disable"]
+
+    #    VastBase
+    #    driverName = "vastbase"
+    #    dsn = "postgres://root:root123@127.0.0.1:5432/layout?sslmode=disable&search_path=layout"
+    #    readDSN = ["postgres://root:root123@127.0.0.1:5432/layout?sslmode=disable&search_path=layout"]
+
+    #    GBase
+    #    driverName = "gbase"
+    #    dsn = "opengauss://ccwork:Abc123456@127.0.0.1:5432/layout?sslmode=disable"
+    #    readDSN = ["opengauss://ccwork:Abc123456@127.0.0.1:5432/layout?sslmode=disable"]
+
+    #   OceanBase
+    #   driverName = "oceanbase"
+    #   dsn = "root@mysqlt#obcluster:71400167127bc5dbece9563f559a616b@tcp(127.0.0.1:2883)/layout?timeout=10s&readTimeout=10s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"
+    #   readDSN = ["root@mysqlt#obcluster:71400167127bc5dbece9563f559a616b@tcp(127.0.0.1:2883)/layout?timeout=10s&readTimeout=10s&writeTimeout=1s&parseTime=true&loc=Local&charset=utf8mb4,utf8"]
 
 [mongo]
-    dbName = "waterdrop"
+    dbName = "layout"
     addr = "127.0.0.1:27017"
     dsn = "mongodb://root:123456@127.0.0.1:27017/?connect=direct"
     #specifies that maximum number of connections allowed in the driver's connection pool to each server.
@@ -65,11 +98,13 @@
     slowQueryDuration = "250ms"
 
 [redis]
-    dbName = "test"
+    dbName = "layout"
     dbIndex = 0
     addr = ["127.0.0.1:6379"]
+    password = "layout"
     deployMode = "node"
-    minIdleConns = 5
+    maxIdle = 5
+    maxActive = 10
     dialTimeout = "1s"
     readTimeout = "1s"
     writeTimeout = "1s"
@@ -77,36 +112,36 @@
     slowOpTimeout = "100ms"
 
 [log]
-    name = "run.log"
-    dir = "."
+    name = "layout.log"
+    dir = "./"
     addCaller = true
     level = "debug"
     callerSkip = 1
     flushInterval= "1s"
     debug = true
-    enableAsyncLog = false
-    disableStacktrace = false
-    maxSize = 500 # maximum 500M log size
+    enableAsyncLog = true
+    disableStacktrace = true
+    maxSize = 50 # maximum 500M log size
     maxAge = 30 # retain maximum 30 days
     maxBackup = 100 # retian maximum 100 log
     watchConfig = true
 
 [trace]
     [trace.jaeger]
-        serviceName = "waterdrop"
+        serviceName = "layout"
         enableRPCMetrics = true
-        #sampler config
+        # sampler config
         samplerType = "const"
         samplerParam = 1
-        #report config
+        # report config
         agentAddr = "127.0.0.1:6831"
         reporterLogSpans = false
         reporterBufferFlushInterval = "2s"
-        #option config
+        # option config
         maxTagValueLength = 5120
 
 [etcd]
-    prefix = "waterdrop"
+    prefix = "layout"
     endpoints = ["127.0.0.1:2379"]
     dialTimeout = "1s"
     registerTTL = "90s"
