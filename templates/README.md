@@ -10,7 +10,9 @@
 
 - 安装XO
 
-`go get -u github.com/xo/xo`
+**xo项目已更换项目名，目前叫dbtpl。当前的xo依赖特定提交，安装命令如下。可以install后自行rename为xo。**
+
+`go install github.com/xo/dbtpl@9a3ddc1e1407243ea7d30a3956073fcbeaa8d7bc`
 
 2、生成代码操作步骤：
 可将所有基于标准SQL的表都在MySQL里创建一下，不论是kingbase、达梦还是其他数据库
