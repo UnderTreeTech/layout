@@ -16,7 +16,7 @@ import (
 	"github.com/UnderTreeTech/layout/internal/server/http"
 	"github.com/UnderTreeTech/layout/internal/service"
 
-	"github.com/UnderTreeTech/waterdrop/pkg/stats"
+	//"github.com/UnderTreeTech/waterdrop/pkg/stats"
 
 	"github.com/UnderTreeTech/waterdrop/pkg/trace/jaeger"
 
@@ -63,11 +63,13 @@ func main() {
 
 	etcd.Register(context.Background(), rpc.ServiceInfo)
 	etcd.Register(context.Background(), http.ServiceInfo)
-	si, err := stats.StartStats("service.demo.v1")
-	if err != nil {
-		panic(fmt.Sprintf("start stats fail, err msg is %s", err.Error()))
-	}
-	etcd.Register(context.Background(), si)
+
+	// 统计信息根据实际情况进行启用，默认不使用
+	//si, err := stats.StartStats("service.demo.v1")
+	//if err != nil {
+	//	panic(fmt.Sprintf("start stats fail, err msg is %s", err.Error()))
+	//}
+	//etcd.Register(context.Background(), si)
 
 	<-c
 
