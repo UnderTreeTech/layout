@@ -7,6 +7,6 @@ import (
 func registerAPI(engine *gin.Engine) {
 	login := engine.Group("/api")
 	{
-		login.GET("/app/user", getUserInfo) // 获取用户信息
+		login.GET("/app/user", getUserInfo) // 查询用户信息
 	}
 }

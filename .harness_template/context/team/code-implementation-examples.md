@@ -325,14 +325,14 @@ func registerAPI(engine *gin.Engine) {
 ```
 
 ### 3.2 HTTP 专属出入参 (`internal/server/http/model/user.go`)
-用于与外部前端进行 JSON 交互，不污染底层数据库 Model。
+用于与外部前端进行 JSON 交互，不污染底层数据库 Model。**注意：HTTP出入参model定义仅允许创建在internal/server/http/model/目录下**
 ```go
 package model
 
 // GetUserInfoReq 获取用户信息请求
 type GetUserInfoReq struct {
-	UserId string `form:"user_id" validate:"required"`
-	UserName string `form:"user_name"`
+	UserId string `json:"user_id" form:"user_id" validate:"required"`
+	UserName string `json:"user_name" form:"user_name"`
 }
 
 // GetUserInfoReply 获取用户信息返回
@@ -376,17 +376,23 @@ func getUserInfo(ctx *gin.Context) {
 
 ### 3.4 service实现 (`internal/service/user.go`)
 处理真正的业务逻辑：`获取并绑定参数 -> 调用 Service 的逻辑层方法 -> 通过统一 reply 格式化返回`。
+**注意：写service逻辑有需要定义struct使用时，必须放在 `{harness_name}/api/{service_name}/internal/model/` 目录下，禁止在业务service文件中定义struct。**
+**注意：业务service需要引用HTTP请求的出入参model定义时，重命名HTTP出入参定义model目录导入命名，如 `m "github.com/UnderTreeTech/layout/internal/server/http/model"`。**
+
 ```go
 package service
 
 import (
 	"context"
+	m "github.com/UnderTreeTech/layout/internal/server/http/model"
 )
 
 // GetUserInfo 获取用户信息
-func (s *Service) GetUserInfo(ctx context.Context, uid string) (reply string, err error) {
+func (s *Service) GetUserInfo(ctx context.Context, uid string) (reply *m.GetUserInfoReply, err error) {
 	// 业务代码
-	return
+	return &m.GetUserInfoReply{
+		UserId:   "1",
+		UserName: "johnsun",
+	}, nil
 }
-
 ```

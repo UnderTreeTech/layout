@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// getUserInfo 查询用户信息
 func getUserInfo(ctx *gin.Context) {
 	req := &model.GetUserInfoReq{}
 	if err := ShouldBind(ctx, &req); err != nil {

@@ -6,7 +6,7 @@
 - 【强制】只允许使用int、varchar及text这三种类型，禁用其他类型
  
 - 【强制】任何时候，同字段在不同表中，命名及类型必须强一制
->正例：课程表中的id，在课程排期、课程预约表中的定义都是course_id unsigned bigint
+>正例：课程表中的id，在课程排期、课程预约表中的定义都是course_id bigint unsigned 
 >
 
 - 【强制】涉及到是否真假，一律0为假否、1为真是；必须使用is_xxx的方式命名，数据类型为unsigned tinyint
@@ -27,7 +27,7 @@
 
 - 【强制】仅能用bigint存储时间类字段，禁止使用timestamp
 
-- 【强制】所有表设计都要有id（自增主键，unsigned bigint）、created_time（记录生成时间，unsigned bigint）、updated_time（记录更新时间，unsigned bigint）字段
+- 【强制】所有表设计都要有id（自增主键，bigint unsigned）、created_time（记录生成时间，bigint unsigned）、updated_time（记录更新时间，bigint unsigned）字段
 
 - 【强制】禁用数据库保留字，如select、type、desc、alter、status、range等，请参考MySQL、Mongo等数据库保留字
 
@@ -41,7 +41,7 @@
 
 - 【推荐】非必要情况尽量不使用text、blob等字段类型，varchar字段尽量不要超过1024字节
 
-- 【推荐】所有涉及到时间的字段统一使用unsigned bigint直接表示unix时间戳、所有涉及到金额的字段统一使用unsigned bigint表示，单位为分
+- 【推荐】所有涉及到时间的字段统一使用bigint unsigned直接表示unix时间戳、所有涉及到金额的字段统一使用bigint表示 unsigned，单位为分
 
 - 【推荐】单表行数超过 500 万行或者单表容量超过 2GB，才推荐进行分库分表
 
@@ -56,12 +56,12 @@
 >
 >正例：如下表所示，其中无符号值可以避免误存负数且扩大了边界范围。
 >	
->|对象|	年龄区间|	类型|	存储字节|	表示范围|
->|-------|--------|-------|-------|------|
->|人	|150岁内	|unsigned tinyint	|1|	0~255|
->|龟	|数百岁	|unsigned |smallint	|2	|0~65535|
->|恐龙化石	|数千万年	|unsigned |int	|4	|0~42.9亿|
->|太阳|	约50亿年|	unsigned bigint|	8	|0~约10的19次方|
+>|对象|	年龄区间| 	类型               | 	存储字节 |	表示范围|
+>|-------|--------|-------------------|-------|------|
+>|人	|150岁内	| tinyint unsigned	 | 1     |	0~255|
+>|龟	|数百岁	| smallint unsigned | 2     |0~65535|
+>|恐龙化石	|数千万年	|int unsigned   | 4	    |0~42.9亿|
+>|太阳|	约50亿年| 	bigint unsigned  | 	8	   |0~约10的19次方|
 >
 
 - 【强制】不得使用外键与级联，一切外键概念必须在应用层解决
