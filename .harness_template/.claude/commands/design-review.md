@@ -7,7 +7,7 @@
 用户输入 `/design:review`。
 
 ## 执行动作
-1. 加载当前活动的 requirement id。
+1. 加载当前活动的 requirement id。**注意：如果用户输入的命令中自带了需求ID字段，则直接使用该ID，无需询问用户**。
 2. 调用 `detail-design-quality-reviewer` Agent。
 3. 检查 `design.md` 和 `tasks/features.json`。
 4. **【核心协议校验】**：校验 `design.md` 中的设计是否与**用户在 `/design:new` 第一步交互中确认的服务归属和通信协议（HTTP Service 或 gRPC Service）**完全一致。
