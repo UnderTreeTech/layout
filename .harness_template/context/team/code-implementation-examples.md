@@ -378,6 +378,7 @@ func getUserInfo(ctx *gin.Context) {
 处理真正的业务逻辑：`获取并绑定参数 -> 调用 Service 的逻辑层方法 -> 通过统一 reply 格式化返回`。
 **注意：写service逻辑有需要定义struct使用时，必须放在 `{harness_name}/api/{service_name}/internal/model/` 目录下，禁止在业务service文件中定义struct。**
 **注意：业务service需要引用HTTP请求的出入参model定义时，重命名HTTP出入参定义model目录导入命名，如 `m "github.com/UnderTreeTech/layout/internal/server/http/model"`。**
+**注意：service函数非复杂接口，入参尽量不要超过3个**
 
 ```go
 package service
