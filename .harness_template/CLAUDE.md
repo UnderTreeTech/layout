@@ -178,6 +178,7 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 | `/requirement:new` | 新建需求，创建标准目录骨架和需求文档 | `/requirement:new 用户续费功能优化` |
 | `/requirement:write` | 使用外部产品文档 MCP 填充拆解需求 | `/requirement:write` |
 | `/requirement:review` | 触发需求阶段门禁自检，生成检查结论 | `/requirement:review` |
+| `/requirement:rewrite` | 基于门禁反馈，重新拆解并更新需求 | `/requirement:rewrite` |
 
 #### 设计管理命令
 
@@ -185,6 +186,7 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 |-----|------|------|
 | `/design:new` | 新建设计方案 | `/design:new` |
 | `/design:review` | 触发设计阶段门禁检查 | `/design:review` |
+| `/design:renew` | 基于门禁反馈，重新修正方案设计和任务拆解 | `/design:renew` |
 
 #### 服务管理命令
 
@@ -197,11 +199,12 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 
 #### 编码与审查命令
 
-| 命令 | 说明 | 示例 |
-|-----|------|------|
-| `/coding:start` | 开始编码循环 | `/coding:start` |
-| `/coding:review` | 触发代码审查门禁 | `/coding:review` |
+| 命令                     | 说明 | 示例                     |
+|------------------------|------|------------------------|
+| `/coding:start`        | 开始编码循环 | `/coding:start`        |
+| `/coding:review`       | 触发代码审查门禁 | `/coding:review`       |
 | `/agentic:code-review` | 触发 8 维度并行代码审查 | `/agentic:code-review` |
+| `/coding:restart`      | 基于门禁反馈，重新进入编码阶段，修正代码问题 | `/coding:restart`      | 
 
 #### 知识沉淀命令
 

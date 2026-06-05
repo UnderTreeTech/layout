@@ -11,7 +11,7 @@
 2. 确认当前需求存在对应的 `design.md` 和 `gate-2-design-review.md`。如果没有 review 文件，提示用户先执行 `/design:review`。
 3. **读取门禁反馈**：读取 `gate-2-design-review.md` 中指出的不通过项和修改建议。收集用户附加的额外修改意见。
 4. **针对性修正设计文档 (`design.md`)**：
-   - 检查核心章节是否完整：本次需求的改动服务范围、整体流程图或流程说明、架构方案（包含改动代码结构）、可能带来的性能瓶颈点分析、潜在的风险点及应对措施。补充缺失部分。
+   - 检查核心章节是否完整：本次需求的改动服务范围、整体流程图或流程说明、架构方案（包含改动代码结构）、可能带来的性能瓶颈点分析。补充缺失部分。
    - 修正与服务归属和通信协议不符的内容。如果是普通HTTP Service，移除 gRPC/proto 相关章节，严格对齐 `code-implementation-examples.md` 中的 HTTP Service 样板。
    - 修正 gRPC service 的设计，确保符合 protobuf 规范和 `code-implementation-examples.md` 的样板。
    - 修正数据访问层设计，确保符合 DAO 样板。

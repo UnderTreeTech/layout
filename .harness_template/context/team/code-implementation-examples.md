@@ -328,10 +328,12 @@ func registerAPI(engine *gin.Engine) {
 ```go
 package model
 
+// GetUserInfoReq 获取用户信息请求
 type GetUserInfoReq struct {
 	UserId string `form:"user_id" binding:"required"`
 }
 
+// GetUserInfoReply 获取用户信息返回
 type GetUserInfoReply struct {
 	UserId   string `json:"user_id"`
 	UserName string `json:"user_name"`
