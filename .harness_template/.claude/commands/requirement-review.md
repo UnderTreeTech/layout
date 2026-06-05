@@ -7,7 +7,7 @@
 用户输入 `/requirement:review`。
 
 ## 执行动作
-1. 加载当前活动的 requirement id（可从 `.harness/local.yaml` 或询问用户获得）。
+1. 加载当前活动的 requirement id（可从 `.harness/local.yaml` 或询问用户获得）。**注意：如果用户输入的命令中自带了需求ID字段，则直接使用该ID，无需询问用户**。
 2. 调用 `requirement-quality-reviewer` Agent。
 3. 读取对应的 `requirement.md` 文件。
 4. 校验是否满足需求评审门禁所有条件。

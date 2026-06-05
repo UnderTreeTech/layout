@@ -114,15 +114,52 @@ if [[ "$VALIDATE_ONLY" == "false" ]]; then
     if [[ ! -f "$HARNESS_LOCAL" ]]; then
         mkdir -p "$(dirname "$HARNESS_LOCAL")"
         cat > "$HARNESS_LOCAL" << EOF
-# Harness Engineering 本地配置（不提交到 git）
-# 此文件已加入 .gitignore
+# .harness/local.yaml — Harness Engineering 本地个人配置
+#
+# ⚠️ 此文件已加入 .gitignore，不会提交到 git 仓库
+# ⚠️ 每个开发者在本机有自己的独立配置，互不影响
+#
+# 作用：
+#   解决"占位符 → 真实路径"的本地绑定问题。
+#
+#   .service-matrix/dependencies.yaml 中使用占位符（如 {repo-root}）
+#   而不是硬编码路径，原因是：
+#   - 不同开发者的本地目录结构不同
+#   - 不同机器（开发机/CI/生产机）的路径不同
+#   - 路径不应该进入版本控制
+#
+#   本文件就是"将占位符替换为本机真实路径"的配置文件。
+#
+# 使用方式：
+#   1. 运行 bash scripts/install.sh 时，会自动创建此文件模板
+#   2. 根据本机实际情况填写下面的配置项
+#   3. Claude Code 在执行命令时会读取此文件解析占位符
 
-# 当前活跃团队（覆盖 .service-matrix/dependencies.yaml 中的 default_team）
-# active_team: layout
+# -------------------------------------------------------------------
+# 仓库根目录路径（必填）
+# 说明：本仓库（monorepo-layout）在本机的绝对路径
+# 用于替换 .service-matrix/dependencies.yaml 中的 {repo-root} 占位符
+# 示例：
+# repo_root: /Users/johndoe/workspace/api
 
-# 本地路径配置（覆盖占位符）
-# business_repo: /path/to/your/business/repo
-# idl_repo: /path/to/your/idl/repo
+# -------------------------------------------------------------------
+# 当前活跃团队（可选，覆盖 .service-matrix 中的 default_team）
+# 说明：当你同时参与多个团队的工作时，用于快速切换上下文
+# 支持通过环境变量覆盖：export HARNESS_TEAM=another-team
+# 示例：
+# active_team: api
+
+# -------------------------------------------------------------------
+# 个人偏好设置（可选）
+preferences:
+  # 代码审查时，优先显示高严重性问题
+  code_review_show_critical_first: true
+
+  # Self-Refinement 时，自动推荐沉淀层级（无需每次确认）
+  self_refinement_auto_suggest: true
+
+  # 需求门禁检查时，显示详细的检查步骤
+  gate_check_verbose: false
 EOF
         log_ok "已创建本地配置：.harness/local.yaml"
     else

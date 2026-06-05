@@ -369,3 +369,20 @@ func getUserInfo(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, reply.Reply(ctx, resp, err))
 }
 ```
+
+### 3.4 service实现 (`internal/service/user.go`)
+处理真正的业务逻辑：`获取并绑定参数 -> 调用 Service 的逻辑层方法 -> 通过统一 reply 格式化返回`。
+```go
+package service
+
+import (
+	"context"
+)
+
+// GetUserInfo 获取用户信息
+func (s *Service) GetUserInfo(ctx context.Context, uid string) (reply string, err error) {
+	// 业务代码
+	return
+}
+
+```
