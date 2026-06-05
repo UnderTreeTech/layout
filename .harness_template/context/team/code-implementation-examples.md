@@ -9,7 +9,7 @@
 我们采用接口隔离与依赖组合的设计。底层数据访问层**必须通过 `xo` 等组件自动生成**，符合以下结构：
 
 ### 1.1 Model 层 (`internal/model/tuser.xo.go`)
-只存放与数据库表一一对应的实体结构体，带有对应的 json 标签。
+只存放与数据库表一一对应的实体结构体，带有对应的 json 标签。**注意：表结构DDL只会使用int、varchar及text字段，对应过来go代码仅会有int及string类字段，禁止因为业务层的出入参定义而篡改model的定义。**
 ```go
 // Package model contains the types for schema db.
 package model
@@ -102,6 +102,7 @@ type dao struct {
 
 ### 1.4 DAO 实现层 (`internal/dao/tuser.xo.go`)
 利用 `squirrel` 组件拼接原生 SQL，结合驱动及事务上下文，实现 `iface` 定义的具体逻辑。
+**注意：Add新增数据不能定义返回结果获取ID，比如从 `result.LastInsertId()` 获取ID，因为有些国产数据库并不支持返回插入的ID。**
 ```go
 // Package dao contains the types for schema db.
 package dao
@@ -330,7 +331,8 @@ package model
 
 // GetUserInfoReq 获取用户信息请求
 type GetUserInfoReq struct {
-	UserId string `form:"user_id" binding:"required"`
+	UserId string `form:"user_id" validate:"required"`
+	UserName string `form:"user_name"`
 }
 
 // GetUserInfoReply 获取用户信息返回

@@ -25,6 +25,8 @@
 
 - 【强制】所有核心操作，如员工、订单、权限 ，都必须要有操作日志表
 
+- 【强制】仅能用bigint存储时间类字段，禁止使用timestamp
+
 - 【强制】所有表设计都要有id（自增主键，unsigned bigint）、created_time（记录生成时间，unsigned bigint）、updated_time（记录更新时间，unsigned bigint）字段
 
 - 【强制】禁用数据库保留字，如select、type、desc、alter、status、range等，请参考MySQL、Mongo等数据库保留字
