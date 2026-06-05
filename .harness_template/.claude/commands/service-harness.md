@@ -86,7 +86,7 @@ context/project/api/{service-name}/
   - context/team/error-code.md
 
 🔜 下一步：
-  1. 在 api/idl/{service-name}/v1/ 下定义 proto 文件
+  1. 在 api/idl/{service-name}/ 下定义 proto 文件
   2. 在 context/project/api/{service-name}/INDEX.md 中补充关键约束
   3. 运行 /service:deps 验证服务依赖关系
 ```

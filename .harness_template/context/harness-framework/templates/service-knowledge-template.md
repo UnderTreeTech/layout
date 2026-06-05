@@ -16,7 +16,7 @@
 
 ```
 api/{service-name}/
-├── api/v1/             # （无独立 IDL，使用全局 api/idl/{service-name}/v1/）
+├── api/             # （无独立 IDL，使用全局 api/idl/{service-name}/）
 ├── cmd/main.go
 ├── configs/application.toml
 └── internal/
@@ -57,7 +57,7 @@ api/{service-name}/
 
 ## API 说明
 
-主要接口（详见 `api/idl/{service-name}/v1/{service-name}.proto`）：
+主要接口（详见 `api/idl/{service-name}/{service-name}.proto`）：
 
 | 接口 | 方法/RPC | 说明 |
 |-----|---------|------|

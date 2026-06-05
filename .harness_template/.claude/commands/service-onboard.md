@@ -92,7 +92,7 @@ context/project/api/chat/
     path: "{repo-root}/api/{service-name}"
     entrypoint: "cmd/main.go"
     protocol: "{http|grpc}"
-    idl_path: "{repo-root}/api/idl/{service-name}/v1/{service-name}.proto"
+    idl_path: "{repo-root}/api/idl/{service-name}/{service-name}.proto"
     description: "{描述}"
     dependencies: []
     upstream: [{上游服务列表}]
@@ -136,7 +136,7 @@ context/project/api/chat/
   - context/team/error-code.md（预留 {起始码}-{结束码} 给 chat）
 
 🔜 下一步（需要手动完成）：
-  1. 在 api/idl/chat/v1/ 下定义 proto 文件并生成代码
+  1. 在 api/idl/chat/ 下定义 proto 文件并生成代码
   2. 在 context/project/api/chat/INDEX.md 中补充关键约束
   3. 如果有跨服务调用，更新 .service-matrix/dependencies.yaml 中的 upstream/downstream
   4. 运行 /service:deps 验证服务依赖关系
@@ -186,5 +186,5 @@ Claude Code 将自动完成：
 6. 预留错误码段
 
 之后用户只需手动完成：
-- 在 `api/idl/chat/v1/` 下定义 proto 文件
+- 在 `api/idl/chat/` 下定义 proto 文件
 - 在 `context/project/api/chat/INDEX.md` 中补充关键约束
