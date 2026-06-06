@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"reflect"
 	"strings"
 	"unsafe"
 
@@ -75,13 +74,16 @@ func StripContentType(contentType string) string {
 
 // StringToBytes converts string to byte slice without a memory allocation.
 func StringToBytes(s string) (b []byte) {
-	sh := *(*reflect.StringHeader)(unsafe.Pointer(&s))
-	bh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
-	bh.Data, bh.Len, bh.Cap = sh.Data, sh.Len, sh.Len
-	return b
+	if s == "" {
+		return nil
+	}
+	return unsafe.Slice(unsafe.StringData(s), len(s))
 }
 
 // BytesToString converts byte slice to string without a memory allocation.
 func BytesToString(b []byte) string {
-	return *(*string)(unsafe.Pointer(&b))
+	if len(b) == 0 {
+		return ""
+	}
+	return unsafe.String(unsafe.SliceData(b), len(b))
 }
