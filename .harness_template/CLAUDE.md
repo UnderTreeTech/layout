@@ -176,6 +176,8 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 | 命令 | 说明 | 示例 |
 |-----|------|------|
 | `/release:start` | 新建版本目录，用于存放本版本所有的需求和上线变更 | `/release:start v1.0.0` |
+| `/release:full` | 全量发布梳理，整理某版本下所有的 SQL/配置/脚本变更，生成全量发布文档 | `/release:full v1.0.0` |
+| `/release:incremental` | 增量发布梳理，针对临时发版、Hotfix 抽取特定变更，生成增量发布文档 | `/release:incremental v1.0.0` |
 | `/requirement:new` | 新建需求，创建标准目录骨架和需求文档 | `/requirement:new 用户续费功能优化` |
 | `/requirement:write` | 使用外部产品文档 MCP 填充拆解需求 | `/requirement:write` |
 | `/requirement:start` | 新建与撰写需求整合指令，一步到位创建目录并基于文档拆解填写需求 | `/requirement:start docId=doc_123 用户续费` |
@@ -292,20 +294,19 @@ cd api && waterdrop new chat
 ### 10.5 版本发布流程
 
 ```bash
-# 1. 创建版本目录
+# 1. 创建版本目录（或者直接通过 /release:start 指令）
 bash scripts/new-release.sh v1.0.0
 
-# 2. 添加变更内容
+# 2. 随需求研发进度添加各服务变更内容
 # 编辑 releases/v1.0.0/sql/ddl/   （DDL 变更）
 # 编辑 releases/v1.0.0/sql/dml/   （DML 变更）
 # 编辑 releases/v1.0.0/configs/   （配置变更）
 # 编辑 releases/v1.0.0/scripts/   （运维脚本）
 
-# 3. 填写发布说明和检查清单
-# 编辑 releases/v1.0.0/RELEASE_NOTES.md
-# 编辑 releases/v1.0.0/checklist.md
-
-# 4. 运维按 checklist.md 执行发布
+# 3. 生成发布文档进行交付
+/release:full v1.0.0            # 大版本全量发布
+# 或
+/release:incremental v1.0.0     # 针对某个 hotfix/bugfix 增量发布
 ```
 
 ---
