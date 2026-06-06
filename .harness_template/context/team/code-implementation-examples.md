@@ -115,6 +115,7 @@ import (
 
 	"github.com/Masterminds/squirrel"
 	"github.com/UnderTreeTech/drivers"
+	"github.com/UnderTreeTech/waterdrop/pkg/database/sql"
 	"github.com/UnderTreeTech/waterdrop/pkg/log"
 )
 
@@ -128,10 +129,20 @@ func (d *dao) AddTUser(ctx context.Context, tu *model.TUser) (err error) {
 		Values(model.GetTUserAddField(tu)...).
 		PlaceholderFormat(d.PlaceHolder()).
 		ToSql()
+	
+	// parse sql to adapter databases
+	sqlStr, err = drivers.QuoteSQL(d.driver, sqlStr)
 	if err != nil {
 		return
 	}
-	_, err = d.db.ExecContext(ctx, sqlStr, args...)
+
+	// run query
+	log.Debug(ctx, "AddTUser", log.String("sql", fmt.Sprint(sqlStr, args)))
+	if tx, txErr := d.GetTxFromCtx(ctx); txErr != nil {
+		_, err = d.db.Exec(ctx, sqlStr, args...)
+	} else {
+		_, err = tx.Exec(sqlStr, args...)
+	}
 	return
 }
 
