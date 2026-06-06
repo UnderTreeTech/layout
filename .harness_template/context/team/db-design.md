@@ -1,4 +1,11 @@
 ## 建表规范
+
+- 【强制】每个表必须自带自增 `id` (bigint unsigned)，且其仅作为底层物理占位和方便高效建立 B+ 树索引使用，**不得具备任何业务含义**。实际的业务标识（如 `user_id`, `order_id` 等）应另外设计字段自行生成。
+
+- 【强制】所有表设计，除主键自带索引外，对于**实体表**（代表具体业务对象的表，如用户表、订单表），其**业务 ID 字段必须建立唯一索引（Unique Index）**。
+
+- 【强制】除上述主键索引与实体表业务 ID 的唯一索引外，**生成的 DDL 中绝对不能包含其他任何普通查询索引**。其他优化查询用的索引，只能在设计文档的“文字建议”部分体现，且尽量避免设计多列联合索引。
+
 - 【强制】所有字段不允许出现null，给各自类型的默认值；任何字段如果为非负数，必须是unsigned
 
 - 【强制】任何时候只允许新增字段，禁止删除字段
@@ -27,7 +34,7 @@
 
 - 【强制】仅能用bigint存储时间类字段，禁止使用timestamp
 
-- 【强制】所有表设计都要有id（自增主键，bigint unsigned）、created_time（记录生成时间，bigint unsigned）、updated_time（记录更新时间，bigint unsigned）字段
+- 【强制】所有表设计都要有id（自增占位主键，bigint unsigned）、created_time（记录生成时间，bigint unsigned）、updated_time（记录更新时间，bigint unsigned）字段
 
 - 【强制】禁用数据库保留字，如select、type、desc、alter、status、range等，请参考MySQL、Mongo等数据库保留字
 
