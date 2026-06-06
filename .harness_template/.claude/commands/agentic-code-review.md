@@ -17,7 +17,7 @@
 调用 `.claude/agents/Implementation/code-review-preparer.md` 执行：
 1. 收集 git diff
 2. 加载上下文
-3. 执行 6 维度审查
+3. 执行 8 维度审查
 4. 生成审查报告
 
 ### Step 3: 输出结果
