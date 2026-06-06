@@ -12,6 +12,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/microcosm-cc/bluemonday v1.0.27
+	github.com/robfig/cron/v3 v3.0.1
 	google.golang.org/grpc v1.80.0
 	google.golang.org/protobuf v1.36.11
 )
