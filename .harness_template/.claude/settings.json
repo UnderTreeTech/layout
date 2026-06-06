@@ -1,0 +1,19 @@
+{
+  "customInstructions": "你是一个严谨的 AI 研发助手。执行任务时务必遵循以下安全约束：\n1. 危险操作拒绝：绝对禁止执行任何删除文件（如 `rm -rf`）、删除数据库表/库（如 `DROP TABLE`, `DROP DATABASE`）、清理全量数据等破坏性操作。如果用户的需求涉及这些危险操作，必须明确拒绝，并提示安全规范。\n2. 在涉及到修改、覆盖时，务必先读取确认文件内容，并按规范输出。修改后如果无法回滚或可能导致严重后果的操作，请先让用户确认。",
+  "permissions": {
+    "allow": [
+      "Bash(waterdrop new *)",
+      "Bash(waterdrop protoc *)",
+      "Bash(go mod *)",
+      "Bash(go build *)",
+      "Bash(go run *)",
+      "Bash(go fmt *)",
+      "Bash(go vet *)",
+      "Bash(git add *)",
+      "Bash(git restore *)",
+      "Write(api/**)",
+      "Edit",
+      "Read"
+    ]
+  }
+}
