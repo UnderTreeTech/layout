@@ -143,6 +143,7 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 | 工程制品 | 作用 |
 |---------|------|
 | `CLAUDE.md` | 全局协作规范（本文件，Claude Code 自动读取） |
+| `.claude/settings.json` | 默认的安全设置与常用白名单权限配置 |
 | `.claude/commands/` | Slash Commands（`/requirement:new` 等） |
 | `.claude/skills/` | 可复用工作流规范 |
 | `.claude/agents/` | 专家角色（门禁执行者） |

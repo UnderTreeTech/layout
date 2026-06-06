@@ -72,6 +72,7 @@ check_file() {
 }
 
 check_file "CLAUDE.md" "项目规范文件"
+check_file ".claude/settings.json" "Claude 安全与权限配置"
 check_file ".claude/commands/requirement-new.md" "需求新建命令"
 check_file ".claude/commands/requirement-write.md" "需求撰写命令"
 check_file ".claude/commands/requirement-start.md" "需求新建与撰写整合命令"
