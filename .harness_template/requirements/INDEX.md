@@ -10,19 +10,18 @@
 ```
 requirements/
 ├── INDEX.md                              # 本文件
-├── {requirement-id}/                     # 单个需求目录
-│   ├── requirement.md                    # 需求文档（来自模板）
-│   ├── status.json                       # 当前阶段状态
-│   ├── outline-design.md                 # 概要设计
-│   ├── detail-design.md                  # 详细设计
-│   ├── tasks/
-│   │   └── features.json                 # 任务拆分（Dev门禁检查）
-│   ├── gate-1-requirement-review.md      # 需求评审门禁结论
-│   ├── gate-2-design-review.md           # 设计门禁结论
-│   ├── gate-3-dev-entry.md               # Dev进入门禁结论
-│   ├── gate-4-service-repo-check.md      # 服务仓库检查门禁结论
-│   └── reviews/                          # 代码审查报告
-│       └── {YYYY-MM-DD}-code-review.md
+├── {version}/                            # 按版本号组织（如 v1.0.0）
+│   ├── {requirement-id}/                 # 单个需求目录
+│   │   ├── requirement.md                # 需求文档（来自模板）
+│   │   ├── status.json                   # 当前阶段状态
+│   │   ├── design.md                     # 方案设计
+│   │   ├── tasks/
+│   │   │   └── features.json             # 任务拆分
+│   │   ├── gate-1-requirement-review.md  # 需求评审门禁结论
+│   │   ├── gate-2-design-review.md       # 设计门禁结论
+│   │   ├── gate-3-code-review.md         # 代码审查门禁结论
+│   │   └── reviews/                      # 代码审查报告
+│   │       └── {YYYY-MM-DD}-code-review.md
 └── _template/                            # 需求目录模板
     └── status.json
 ```

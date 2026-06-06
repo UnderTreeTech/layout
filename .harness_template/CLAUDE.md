@@ -16,7 +16,8 @@ monorepo-layout/                    # 仓库根目录
 ├── .claude/                        # Claude Code 配置（commands/skills/agents）
 ├── .service-matrix/                # 服务拓扑（单一真相源）
 ├── context/                        # 三层知识体系
-├── releases/                       # 版本及需求生命周期产物（按版本号组织）
+├── requirements/                   # 需求生命周期产物（内部按版本分组）
+├── releases/                       # 版本上线变更（SQL/配置/脚本）
 ├── scripts/                        # 工具脚本
 │
 └── api/                            # 业务代码（按服务分目录）
@@ -40,7 +41,7 @@ monorepo-layout/                    # 仓库根目录
 **关键约束**：
 - Harness 工程制品（`CLAUDE.md`、`.claude/`、`context/`、`releases/`）**只在根目录**，不在各服务目录中重复
 - 各服务目录（`api/order/`、`api/pay/`、`api/user/`）只包含业务代码，不含 Harness 相关内容
-- 所有需求、设计、门禁结论统一在根目录的 `releases/{version}/requirements/` 下管理
+- 所有需求、设计、门禁结论统一在根目录的 `requirements/{version}/` 下管理
 
 ---
 
@@ -150,7 +151,7 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 | `context/harness-framework/` | 框架工程规范 |
 | `context/project/api/{service}/` | 服务级知识 |
 | `.service-matrix/dependencies.yaml` | 服务拓扑（单一真相源） |
-| `releases/{version}/requirements/` | 需求生命周期产物 |
+| `requirements/{version}/` | 需求生命周期产物 |
 | `releases/` | 版本管理（SQL/配置/脚本变更） |
 
 ---
@@ -265,7 +266,7 @@ cd api && waterdrop new chat
 
 # 1. 启动需求（新建并撰写，或者分步执行 /requirement:new 和 /requirement:write）
 /requirement:start 某某功能需求
-# 选择归属版本后生成并编辑 releases/{version}/requirements/{req-id}/requirement.md
+# 选择归属版本后生成并编辑 requirements/{version}/{req-id}/requirement.md
 
 # 2. 需求门禁
 /requirement:review

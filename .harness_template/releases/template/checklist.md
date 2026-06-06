@@ -100,7 +100,7 @@ bash releases/v{version}/scripts/post-deploy/001-xxx.sh
 
 ## 发布完成
 
-- [ ] 更新 `releases/{version}/requirements/{requirement-id}/status.json` 为 DONE
+- [ ] 更新 `requirements/{version}/{requirement-id}/status.json` 为 DONE
 - [ ] 发布结果通知相关团队
 - [ ] 更新运维文档（如有变更）
 

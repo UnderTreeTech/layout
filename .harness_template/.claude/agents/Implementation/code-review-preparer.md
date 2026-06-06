@@ -37,7 +37,7 @@ git diff origin/develop...HEAD
 1. `context/team/` 中的相关规范
 2. 涉及服务的 `context/project/*/experience/` 中的踩坑经验
 3. 涉及服务的 `.service-matrix/dependencies.yaml` 中的服务信息
-4. 当前需求的 `releases/{version}/requirements/{requirement-id}/detail-design.md`
+4. 当前需求的 `requirements/{version}/{requirement-id}/detail-design.md`
 
 ### Step 4: 调用 code-review-report Skill
 
@@ -45,14 +45,14 @@ git diff origin/develop...HEAD
 
 ### Step 5: 写入审查报告
 
-将审查结果写入 `releases/{version}/requirements/{requirement-id}/reviews/{YYYY-MM-DD}-code-review.md`。
+将审查结果写入 `requirements/{version}/{requirement-id}/reviews/{YYYY-MM-DD}-code-review.md`。
 
 ### Step 6: 输出摘要
 
 ```markdown
 ## 📋 代码审查完成
 
-**审查报告**：releases/{version}/requirements/{requirement-id}/reviews/{date}-code-review.md
+**审查报告**：requirements/{version}/{requirement-id}/reviews/{date}-code-review.md
 
 **结论**：{APPROVED / CHANGES_REQUIRED}
 

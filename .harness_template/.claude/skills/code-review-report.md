@@ -38,7 +38,7 @@
 
 ### Step 3: 聚合报告
 
-将 8 个维度的结果聚合为统一报告，写入 `releases/{version}/requirements/{requirement-id}/reviews/{YYYY-MM-DD}-code-review.md`。
+将 8 个维度的结果聚合为统一报告，写入 `requirements/{version}/{requirement-id}/reviews/{YYYY-MM-DD}-code-review.md`。
 
 ---
 

@@ -1,6 +1,6 @@
 # 需求文档模板
 
-> **使用说明**：复制本模板到 `releases/{version}/requirements/{requirement-id}/requirement.md`，填写各字段。
+> **使用说明**：复制本模板到 `requirements/{version}/{requirement-id}/requirement.md`，填写各字段。
 > 带 `*` 的字段为必填，需求评审门禁会检查这些字段。
 
 ---

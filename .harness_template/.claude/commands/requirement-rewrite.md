@@ -10,7 +10,7 @@
 
 ### Step 1: 确定当前需求 ID 和文档路径
 1. 加载当前活动的 requirement id（可从 `.harness/local.yaml` 或询问用户获得）。**注意：如果用户输入的命令中自带了需求ID字段（如 `/requirement:rewrite T123`），则直接使用该ID，无需询问用户**。
-2. 定位到对应的 `releases/{version}/requirements/{requirement-id}/requirement.md` 和 `gate-1-requirement-review.md`。如果 review 文件不存在，提示用户先执行 `/requirement:review`。
+2. 定位到对应的 `requirements/{version}/{requirement-id}/requirement.md` 和 `gate-1-requirement-review.md`。如果 review 文件不存在，提示用户先执行 `/requirement:review`。
 
 ### Step 2: 收集门禁反馈
 读取 `gate-1-requirement-review.md` 中指出的问题点和修改建议。如果用户在命令后附加了额外的修改意见文本，也一并收集。
@@ -28,12 +28,12 @@
 6. **影响面分析**：根据反馈修正影响面分析。
 
 ### Step 5: 更新需求文档
-将修正后的 Markdown 内容写回 `releases/{version}/requirements/{requirement-id}/requirement.md` 文件。
+将修正后的 Markdown 内容写回 `requirements/{version}/{requirement-id}/requirement.md` 文件。
 
 ### Step 6: 引导用户下一步
 输出提示：
 ```
-✅ 需求文档已基于评审意见修正并重新写入：releases/{version}/requirements/{requirement-id}/requirement.md
+✅ 需求文档已基于评审意见修正并重新写入：requirements/{version}/{requirement-id}/requirement.md
 
 📝 下一步：
 1. 请人工走查确认修正后的需求文档。

@@ -24,7 +24,8 @@ monorepo-layout/                # 仓库根目录
 ├── .claude/                    # Claude Code 配置
 ├── context/                    # 三层知识体系
 ├── .service-matrix/            # 服务拓扑
-├── releases/                   # 版本及需求生命周期产物
+├── requirements/               # 需求生命周期产物（内部按版本分组）
+├── releases/                   # 版本发布管理
 ├── scripts/                    # 工具脚本
 │
 └── api/                        # 业务代码目录

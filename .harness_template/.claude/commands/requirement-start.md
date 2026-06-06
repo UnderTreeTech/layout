@@ -27,7 +27,7 @@
 ### Step 3: 创建目录结构
 
 ```
-releases/{version}/requirements/{requirement-id}/
+requirements/{version}/{requirement-id}/
 ├── requirement.md          # 需求文档（后续将写入 AI 生成的内容）
 ├── status.json             # 初始化为 INIT 阶段
 └── tasks/
@@ -45,7 +45,7 @@ releases/{version}/requirements/{requirement-id}/
 6. **影响面分析**：从服务矩阵中初步提取可能涉及的模块/服务，并留空待开发者进一步补充确认。
 7. **忽略项**：无须关心一切与UI相关的设计，不用体现出来。
 
-生成最终 Markdown 内容，并写入 `releases/{version}/requirements/{requirement-id}/requirement.md` 文件。
+生成最终 Markdown 内容，并写入 `requirements/{version}/{requirement-id}/requirement.md` 文件。
 
 ### Step 5: 初始化 status.json
 
@@ -67,7 +67,7 @@ releases/{version}/requirements/{requirement-id}/
 
 输出提示：
 ```
-✅ 需求目录已创建且文档已生成写入：releases/{version}/requirements/{requirement-id}/requirement.md
+✅ 需求目录已创建且文档已生成写入：requirements/{version}/{requirement-id}/requirement.md
 
 📝 下一步：
 1. 请人工走查并微调生成的需求文档，特别是"影响面分析"和"验收标准"部分。

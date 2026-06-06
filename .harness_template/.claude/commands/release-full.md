@@ -12,7 +12,7 @@
 
 ### Step 2: 收集全量变更产物
 使用工具读取并汇总该版本下的所有变更文件：
-1. **需求列表**：遍历 `releases/{version}/requirements/` 下的需求，提取准备发布的需求及 BugFix 列表。
+1. **需求列表**：遍历 `requirements/{version}/` 下的需求，提取准备发布的需求及 BugFix 列表。
 2. **数据库变更**：读取 `releases/{version}/sql/ddl/` 和 `releases/{version}/sql/dml/` 下的所有 SQL 文件，按序号升序排列。
 3. **配置变更**：读取 `releases/{version}/configs/diff/` 下的配置变更/比对文件。
 4. **脚本变更**：读取 `releases/{version}/scripts/pre-deploy/` 和 `post-deploy/` 下的运维脚本。

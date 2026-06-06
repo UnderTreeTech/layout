@@ -43,7 +43,7 @@
 - [ ] 验收标准具体、可测试
 - [ ] 影响面分析完成（涉及哪些服务/模块）
 
-**结论写入**：`releases/{version}/requirements/{requirement-id}/gate-1-requirement-review.md`
+**结论写入**：`requirements/{version}/{requirement-id}/gate-1-requirement-review.md`
 
 ---
 
@@ -58,7 +58,7 @@
 - [ ] 数据库变更方案（DDL/DML）已列出
 - [ ] `tasks/features.json` 存在且格式合法，任务粒度合理
 
-**结论写入**：`releases/{version}/requirements/{requirement-id}/gate-2-design-review.md`
+**结论写入**：`requirements/{version}/{requirement-id}/gate-2-design-review.md`
 
 ---
 
@@ -72,7 +72,7 @@
 - [ ] 业务逻辑符合设计文档预期
 - [ ] 单元测试覆盖核心逻辑
 
-**结论写入**：`releases/{version}/requirements/{requirement-id}/gate-3-code-review.md`
+**结论写入**：`requirements/{version}/{requirement-id}/gate-3-code-review.md`
 
 ---
 
@@ -82,7 +82,7 @@
 REQUIREMENT_DEFINING → [GATE_1] → DESIGNING → [GATE_2] → CODING → [GATE_3] → DONE
 ```
 
-当前阶段记录在：`releases/{version}/requirements/{requirement-id}/status.json`
+当前阶段记录在：`requirements/{version}/{requirement-id}/status.json`
 
 ```json
 {
