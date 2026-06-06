@@ -6,7 +6,7 @@ require (
 	gitee.com/opengauss/openGauss-connector-go-pq v1.0.4
 	github.com/Masterminds/squirrel v1.4.0
 	github.com/UnderTreeTech/drivers v0.0.0-20260603151246-98d847194676
-	github.com/UnderTreeTech/waterdrop v1.3.7-0.20260603105759-3e36cc10496d
+	github.com/UnderTreeTech/waterdrop v1.3.7-0.20260606143209-3c0ed0d85f94
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
@@ -34,7 +34,7 @@ require (
 	github.com/cznic/mathutil v0.0.0-20181122101859-297441e03548 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
-	github.com/gin-contrib/cors v1.3.1 // indirect
+	github.com/gin-contrib/cors v1.7.2 // indirect
 	github.com/gin-contrib/sse v1.1.0 // indirect
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
