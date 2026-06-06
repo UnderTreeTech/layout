@@ -14,6 +14,7 @@
 
 将执行以下操作：
   - 删除 context/project/api/{service-name}/ 知识库目录
+  - 从 go.work 中移除该服务路径
   - 从 .service-matrix/dependencies.yaml 中移除该服务
   - 从 context/project/api/INDEX.md 中移除该服务行和依赖关系
   - 从 context/team/error-code.md 中标记该错误码段为已废弃
@@ -44,7 +45,11 @@
 删除 context/project/api/{service-name}/ 整个目录
 ```
 
-### Step 4: 更新服务矩阵
+### Step 4: 从工作区移除
+
+从根目录的 `go.work` 文件的 `use` 块中移除该服务的路径（如 `./api/{service-name}`）。
+
+### Step 5: 更新服务矩阵
 
 从 `.service-matrix/dependencies.yaml` 中：
 - 移除 `services:` 下该服务的配置块
@@ -52,17 +57,17 @@
 - 移除 `idl_frozen_fields:` 中该服务相关的冻结字段记录
 - 清理其他服务 `upstream/downstream` 中对该服务的引用
 
-### Step 5: 更新项目 INDEX.md
+### Step 6: 更新项目 INDEX.md
 
 从 `context/project/api/INDEX.md` 中：
 - 移除服务列表表格中该服务的行
 - 更新服务间依赖关系图（移除该服务相关的连线）
 
-### Step 6: 标记错误码段废弃
+### Step 7: 标记错误码段废弃
 
 在 `context/team/error-code.md` 中，将该服务的错误码段标记为 `[已废弃]`，但不删除（保留审计记录）。
 
-### Step 7: 输出完成摘要
+### Step 8: 输出完成摘要
 
 ```
 ✅ {service-name} 服务已从 Harness 制品中下线！
@@ -71,6 +76,7 @@
   - context/project/api/{service-name}/（知识库目录）
 
 📝 已更新：
+  - go.work（移除服务路径）
   - .service-matrix/dependencies.yaml（移除服务配置）
   - context/project/api/INDEX.md（移除服务行和依赖图）
   - context/team/error-code.md（错误码段标记为已废弃）
@@ -114,9 +120,10 @@
 1. 从 `.service-matrix/dependencies.yaml` 读取所有已注册服务
 2. 逐个清理每个服务的 Harness 制品
 3. 清空 `context/project/api/` 下所有服务知识库目录（保留 INDEX.md）
-4. 重置 `.service-matrix/dependencies.yaml` 中 `services:` 和 `modules:` 为空
-5. 重置 `context/project/api/INDEX.md` 服务列表和依赖图为空
-6. 在 `context/team/error-code.md` 中将所有服务错误码段标记为已废弃
+4. 从 `go.work` 中移除所有 `api/*` 相关的服务路径
+5. 重置 `.service-matrix/dependencies.yaml` 中 `services:` 和 `modules:` 为空
+6. 重置 `context/project/api/INDEX.md` 服务列表和依赖图为空
+7. 在 `context/team/error-code.md` 中将所有服务错误码段标记为已废弃
 
 ```
 ⚠️ 即将下线所有服务（共 {n} 个）：

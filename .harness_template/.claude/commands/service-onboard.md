@@ -56,6 +56,25 @@ cd api && waterdrop new {service-name}
 请确认 waterdrop 已正确安装：go install github.com/UnderTreeTech/waterdrop/cmd/waterdrop@latest
 ```
 
+### Step 2.5: 根据通信协议清理代码模板
+
+根据用户选择的通信协议（HTTP 或 gRPC），清理 `waterdrop new` 生成的默认模板代码：
+
+- **如果通信协议为 gRPC (gRPC Service)**：
+  1. 修改入口文件（如 `cmd.go` 或 `cmd/main.go`），**去掉 HTTP service 的注册**及其所有相关实现文件、目录。
+  2. **移除 `api` 整个目录**（里面有 demo 的 proto 定义）。
+  3. 修改 `internal/server/grpc/server.go`，确保**注册本服务实现的 proto service**。
+  4. **删除** `internal/service/demo.go` 文件。
+  
+- **如果通信协议为 HTTP (HTTP Service)**：
+  1. 不需要注册 gRPC service。
+  2. 修改入口文件，**去掉 gRPC service 的注册**。
+  3. **删除 gRPC 相关实现及文件、目录**。
+
+### Step 2.8: 将服务加入工作区
+
+将新生成的服务路径（如 `./api/{service-name}`）追加到仓库根目录的 `go.work` 文件中的 `use` 块内。
+
 ### Step 3: 生成服务知识库目录
 
 > ⚠️ **关键路径约束**：知识库目录必须创建在 `context/project/api/{service-name}/` 下，
@@ -135,6 +154,7 @@ context/project/api/chat/
   - context/project/api/chat/docs/api/.gitkeep
 
 📝 更新文件：
+  - go.work（添加 ./api/chat）
   - .service-matrix/dependencies.yaml（新增 chat 服务）
   - context/project/api/INDEX.md（新增 chat 服务条目）
   - context/team/error-code.md（预留 {起始码}-{结束码} 给 chat）
@@ -184,10 +204,12 @@ context/project/api/chat/
 Claude Code 将自动完成：
 1. 交互式询问协议/依赖等信息
 2. 执行 `cd api && waterdrop new chat` 生成业务代码
-3. 创建 `context/project/api/chat/` 知识库目录
-4. 更新 `.service-matrix/dependencies.yaml`
-5. 更新 `context/project/api/INDEX.md`
-6. 预留错误码段
+3. 根据协议（HTTP/gRPC）清理业务代码默认模板
+4. 将新服务添加到 `go.work`（如 `./api/chat`）
+5. 创建 `context/project/api/chat/` 知识库目录
+6. 更新 `.service-matrix/dependencies.yaml`
+7. 更新 `context/project/api/INDEX.md`
+8. 预留错误码段
 
 之后用户只需手动完成：
 - 在 `api/idl/chat/` 下定义 proto 文件

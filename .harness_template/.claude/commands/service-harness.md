@@ -39,6 +39,34 @@
 - 目录**存在**：继续
 - 目录**不存在**：提示用户先执行 `cd api && waterdrop new {service_name}`
 
+### Step 2.5: 根据通信协议清理代码模板
+
+验证目录存在后，根据用户选择的通信协议（HTTP 或 gRPC），检查并清理 `waterdrop new` 生成的默认模板代码：
+
+- **如果通信协议为 gRPC (gRPC Service)**：
+  1. 修改入口文件（如 `cmd.go` 或 `cmd/main.go`），**去掉 HTTP service 的注册**及其所有相关实现文件、目录。
+  2. **移除 `api` 整个目录**（里面有 demo 的 proto 定义）。
+  3. 修改 `internal/server/grpc/server.go`，确保**注册本服务实现的 proto service**，同时修改注册的服务名（Name）为 `service.{service-name}.v1`。
+  4. **删除** `internal/service/` 目录下所有由框架自动生成的示例业务逻辑文件（如 `demo.go`, `user.go` 等），确保该目录是干净的。
+  
+- **如果通信协议为 HTTP (HTTP Service)**：
+  1. 不需要注册 gRPC service。
+  2. 修改入口文件，**去掉 gRPC service 的注册**。
+  3. 修改 `internal/server/http/server.go`，确保 `registry.ServiceInfo` 中的 `Name` 字段被设置为 `server.http.{service-name}`（其中 `{service-name}` 是当前创建的服务名）。
+  4. **删除 gRPC 相关实现及文件、目录**。
+
+### Step 2.6: 编译验证
+
+清理完成后，必须在对应的业务服务目录（`api/{service-name}`）下执行编译，确保清理操作没有破坏代码的连通性：
+```bash
+cd api/{service-name} && go build ./...
+```
+- 如果编译失败，说明清理过程有遗漏（例如引用了已被删除的 demo 包），必须自动修正相应的代码直到编译通过。
+
+### Step 2.8: 将服务加入工作区
+
+将服务路径（如 `./api/{service-name}`）追加到仓库根目录的 `go.work` 文件中的 `use` 块内（如果尚未添加）。
+
 ### Step 3: 生成知识库目录
 
 > ⚠️ **关键路径约束**：知识库目录必须创建在 `context/project/api/{service-name}/` 下，
@@ -83,6 +111,7 @@ context/project/api/{service-name}/
   - context/project/api/{service-name}/docs/api/.gitkeep
 
 📝 更新文件：
+  - go.work
   - .service-matrix/dependencies.yaml
   - context/project/api/INDEX.md
   - context/team/error-code.md
