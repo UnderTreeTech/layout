@@ -43,7 +43,7 @@ requirements/
     "assignee": "{@姓名}",
     "created_at": "{YYYY-MM-DDTHH:mm:ss+08:00}",
     "last_updated": "{YYYY-MM-DDTHH:mm:ss+08:00}",
-    "branch": "feature/{devops-name}/{tapd-id}"
+    "branch": "feature/{devops-name}/{geelib-id}"
 }
 ```
 

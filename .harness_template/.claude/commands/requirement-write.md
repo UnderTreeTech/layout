@@ -10,7 +10,7 @@
 
 ### Step 1: 确定当前需求 ID 和文档路径
 1. 加载当前活动的 requirement id（可从 `.harness/local.yaml` 或询问用户获得）。**注意：如果用户输入的命令中自带了需求ID字段（如 `/requirement:write T123`），则直接使用该ID，无需询问用户**。
-2. 定位到对应的 `requirements/{requirement-id}/requirement.md`。如果该文件不存在，提示用户先执行 `/requirement:new` 或 `/requirement:start`。
+2. 定位到对应的 `releases/{version}/requirements/{requirement-id}/requirement.md`。如果该文件不存在，提示用户先执行 `/requirement:new` 或 `/requirement:start`。
 
 ### Step 2: 收集产品需求输入
 询问用户提供产品需求文档的 docId。当用户提供 docId 时，使用 knowledge-skill 的 cli 能力读取需求内容，执行命令为：`editor-cli read <docId>`。若用户直接以文本方式输入部分产品设计内容，也予以接受。
@@ -29,12 +29,12 @@
 7. **忽略项**：无须关心一切与UI相关的设计，不用体现出来
 
 ### Step 5: 更新需求文档
-将生成并组装好的 Markdown 内容写回 `requirements/{requirement-id}/requirement.md` 文件。
+将生成并组装好的 Markdown 内容写回 `releases/{version}/requirements/{requirement-id}/requirement.md` 文件。
 
 ### Step 6: 引导用户下一步
 输出提示：
 ```
-✅ 需求文档已生成并写入：requirements/{requirement-id}/requirement.md
+✅ 需求文档已生成并写入：releases/{version}/requirements/{requirement-id}/requirement.md
 
 📝 下一步：
 1. 请人工走查并微调生成的需求文档，特别是"影响面分析"和"验收标准"部分。

@@ -41,6 +41,7 @@ mkdir -p "$TARGET_DIR/configs/diff"
 mkdir -p "$TARGET_DIR/scripts/pre-deploy"
 mkdir -p "$TARGET_DIR/scripts/post-deploy"
 mkdir -p "$TARGET_DIR/scripts/rollback"
+mkdir -p "$TARGET_DIR/requirements"
 
 echo "✅ 版本目录已创建：releases/$VERSION/"
 echo ""

@@ -1,10 +1,8 @@
 package utils
 
 import (
-	"math/rand"
 	"reflect"
 	"strings"
-	"time"
 	"unsafe"
 
 	"github.com/UnderTreeTech/layout/internal/i18n"
@@ -65,18 +63,6 @@ func TranslateError(ctx *gin.Context, err error) (errmsg string) {
 	return
 }
 
-// RandomString generate random string by len
-func RandomString(length int) string {
-	sb := strings.Builder{}
-
-	rand.Seed(time.Now().UnixNano())
-	for i := 0; i < length; i++ {
-		sb.WriteByte(_letters[rand.Intn(len(_letters))])
-	}
-
-	return sb.String()
-}
-
 // StripContentType strip content-type
 // application/json;charset=utf-8
 func StripContentType(contentType string) string {
@@ -98,19 +84,4 @@ func StringToBytes(s string) (b []byte) {
 // BytesToString converts byte slice to string without a memory allocation.
 func BytesToString(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
-}
-
-// ParseDSNAddr 解析DSN中的IP+PORT，该方法仅适用于@(IP+PORT)/格式的DSN，如非此类型的请自定义解析方法
-func ParseDSNAddr(dsn string) (addr string) {
-	atIdx := strings.Index(dsn, "@")
-	if atIdx == -1 {
-		return
-	}
-	slot := strings.Trim(dsn[atIdx:], "@")
-	addrs := strings.Split(slot, "/")
-	if len(addrs) == 0 {
-		return
-	}
-	addr = addrs[0]
-	return
 }

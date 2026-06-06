@@ -23,15 +23,15 @@
 
 ### Step 1: 读取需求条目
 
-从 `requirements/{requirement-id}/requirement.md` 中提取所有 `REQ-XXX` 条目。
+从 `releases/{version}/requirements/{requirement-id}/requirement.md` 中提取所有 `REQ-XXX` 条目。
 
 ### Step 2: 检查设计覆盖
 
-对每个 REQ-XXX，在 `requirements/{requirement-id}/detail-design.md` 中查找对应的设计决策。
+对每个 REQ-XXX，在 `releases/{version}/requirements/{requirement-id}/detail-design.md` 中查找对应的设计决策。
 
 ### Step 3: 检查任务覆盖
 
-对每个 REQ-XXX，在 `requirements/{requirement-id}/tasks/features.json` 中查找对应的任务。
+对每个 REQ-XXX，在 `releases/{version}/requirements/{requirement-id}/tasks/features.json` 中查找对应的任务。
 
 ### Step 4: 检查代码覆盖（可选）
 

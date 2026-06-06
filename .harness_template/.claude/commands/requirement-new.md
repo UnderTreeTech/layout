@@ -10,6 +10,7 @@
 ### Step 1: 收集基本信息
 
 如果用户没有提供需求标题，询问：
+- 所属版本（如 v1.0.0，不填则默认或提示手动创建版本）
 - 需求标题
 - 需求 ID（如有 Geelib/TAPD/Jira ID）
 - 优先级（P0/P1/P2/P3）
@@ -24,8 +25,9 @@
 
 ### Step 3: 创建目录结构
 
+如果 `releases/{version}` 目录不存在，提示先使用 `bash scripts/new-release.sh {version}`。
 ```
-requirements/{requirement-id}/
+releases/{version}/requirements/{requirement-id}/
 ├── requirement.md          # 从模板创建，预填已知信息
 ├── status.json             # 初始化为 INIT 阶段
 └── tasks/
@@ -43,6 +45,7 @@ requirements/{requirement-id}/
 
 ```json
 {
+    "version": "{version}",
     "requirement_id": "{requirement-id}",
     "title": "{需求标题}",
     "current_stage": "REQUIREMENT_DEFINING",
@@ -51,7 +54,7 @@ requirements/{requirement-id}/
     "assignee": "",
     "created_at": "{当前时间}",
     "last_updated": "{当前时间}",
-    "branch": "feature/{devops-name}/{tapd-id}"
+    "branch": "feature/{devops-name}/{geelib-id}"
 }
 ```
 
@@ -59,10 +62,10 @@ requirements/{requirement-id}/
 
 输出提示：
 ```
-✅ 需求目录已创建：requirements/{requirement-id}/
+✅ 需求目录已创建：releases/{version}/requirements/{requirement-id}/
 
 📝 下一步：
-1. 运行 `/requirement:write` 命令基于 MCP 服务或文档自动拆解填写需求，或手动编辑 `requirements/{requirement-id}/requirement.md` 中的需求内容（你也可以使用 `/requirement:start` 一步完成新建与撰写）
+1. 运行 `/requirement:write` 命令基于 MCP 服务或文档自动拆解填写需求，或手动编辑 `releases/{version}/requirements/{requirement-id}/requirement.md` 中的需求内容（你也可以使用 `/requirement:start` 一步完成新建与撰写）
 2. 完成后运行 `/requirement:review` 进行需求评审门禁检查
 3. 通过后运行 `/design:new` 进入设计阶段
 

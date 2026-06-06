@@ -40,7 +40,7 @@
 ### Step 1: 读取需求文档
 
 ```
-读取 requirements/{requirement-id}/requirement.md
+读取 releases/{version}/requirements/{requirement-id}/requirement.md
 ```
 
 ### Step 2: 逐项检查
@@ -53,7 +53,7 @@
 
 ### Step 4: 生成门禁结论
 
-将结论写入 `requirements/{requirement-id}/gate-1-requirement-review.md`。
+将结论写入 `releases/{version}/requirements/{requirement-id}/gate-1-requirement-review.md`。
 
 ---
 

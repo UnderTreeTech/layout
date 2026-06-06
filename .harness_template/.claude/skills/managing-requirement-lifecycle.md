@@ -18,7 +18,7 @@
 ### Step 1: 加载当前状态
 
 ```
-读取 requirements/{requirement-id}/status.json
+读取 releases/{version}/requirements/{requirement-id}/status.json
 确认当前阶段（current_stage）和步骤（current_step）
 ```
 
@@ -57,7 +57,7 @@
 
 ### Step 5: 更新状态
 
-操作完成后，更新 `requirements/{requirement-id}/status.json` 中的阶段信息。
+操作完成后，更新 `releases/{version}/requirements/{requirement-id}/status.json` 中的阶段信息。
 
 ---
 

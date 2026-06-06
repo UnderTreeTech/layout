@@ -42,8 +42,8 @@
 ### Step 1: 读取设计文档和需求文档
 
 ```
-读取 requirements/{requirement-id}/design.md
-读取 requirements/{requirement-id}/requirement.md
+读取 releases/{version}/requirements/{requirement-id}/design.md
+读取 releases/{version}/requirements/{requirement-id}/requirement.md
 ```
 
 ### Step 2: 追溯链验证
@@ -60,7 +60,7 @@
 
 ### Step 5: 生成门禁结论
 
-将结论写入 `requirements/{requirement-id}/gate-2-design-review.md`。
+将结论写入 `releases/{version}/requirements/{requirement-id}/gate-2-design-review.md`。
 
 ---
 
