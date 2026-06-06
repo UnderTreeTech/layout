@@ -397,3 +397,72 @@ func (s *Service) GetUserInfo(ctx context.Context, uid string) (reply *m.GetUser
 	}, nil
 }
 ```
+---
+
+## 4. 跨服务 RPC 调用样板 (gRPC Client)
+
+**注意：当业务逻辑需要进行跨服务调用（调用其他 gRPC Service）时，无论是 HTTP Service 还是 gRPC Service，其对外部 RPC 服务的依赖定义、初始化以及调用方式均遵循以下规范。**
+
+### 4.1 RPC Client 定义与初始化 (`internal/service/service.go`)
+
+所有外部服务的 RPC Client 在 `Service` 结构体中统一维护，在 `New` 初始化函数中通过 `waterdrop` 的客户端库创建连接，绑定必要的拦截器（如断路器），并最终挂载到 `Service` 实例。
+
+```go
+package service
+
+import (
+	"fmt"
+
+	// 引入依赖外部服务的协议生成包
+	"api/idl/user"
+
+	"github.com/UnderTreeTech/waterdrop/pkg/conf"
+	"github.com/UnderTreeTech/waterdrop/pkg/server/rpc/client"
+	"github.com/UnderTreeTech/waterdrop/pkg/server/rpc/config"
+	"github.com/UnderTreeTech/waterdrop/pkg/server/rpc/interceptors"
+)
+
+type Service struct {
+	// ...
+	// 外部 RPC 客户端实例，按照依赖的服务隔离保存
+	user user.UserClient
+}
+
+func New(d dao.Dao, cfg *Config) *Service {
+	// 1. 初始化客户端配置并解析 yaml 配置
+	userCfg := &config.ClientConfig{}
+	if err := conf.Unmarshal("client.rpc.user", userCfg); err != nil {
+		panic(fmt.Sprintf("unmarshal user client config fail, err msg %s", err.Error()))
+	}
+
+	// 2. 利用配置创建基础 RPC 客户端连接
+	userRPCCli := client.New(userCfg)
+	user := organization.NewUserClient(userRPCCli.GetConn())
+
+	svc := &Service{
+		// ...
+		user: user,
+	}
+
+	return svc
+}
+```
+
+### 4.2 RPC Client 业务调用 (`internal/service/group.go` 或其他业务文件)
+
+在具体的业务逻辑方法中，直接通过 `Service` 挂载的特定客户端对象（例如 `s.user`）调用外部服务的 RPC 方法。
+
+```go
+	// 1. 构建跨服务 RPC 请求包
+	userInfoReq := &user.UserInfoReq{
+		Uid: req.GetUserId(),
+	}
+
+	// 2. 发起跨服务调用并传递 context (重要，为了链路追踪与超时控制)
+	hostInfo, err := s.user.GetUserInfo(ctx, userInfoReq)
+	if err != nil {
+		log.Error(ctx, "get user info fail", log.Uint64("uid", groupInfo.HostUID),
+			log.String("error", err.Error()))
+		return
+	}
+```
