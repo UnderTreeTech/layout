@@ -73,6 +73,8 @@ check_file() {
 
 check_file "CLAUDE.md" "项目规范文件"
 check_file ".claude/commands/requirement-new.md" "需求新建命令"
+check_file ".claude/commands/requirement-write.md" "需求撰写命令"
+check_file ".claude/commands/requirement-start.md" "需求新建与撰写整合命令"
 check_file ".claude/commands/agentic-code-review.md" "代码审查命令"
 check_file ".claude/commands/knowledge-extract-experience.md" "经验提取命令"
 check_file ".claude/commands/service-deps.md" "服务依赖命令"
@@ -178,7 +180,7 @@ if [[ $ERRORS -eq 0 ]]; then
     echo "下一步："
     echo "  1. 填写 .service-matrix/dependencies.yaml 中的服务信息"
     echo "  2. 更新 .harness/local.yaml 中的本地路径"
-    echo "  3. 在 Claude Code 中输入 /requirement:new 开始第一个需求"
+    echo "  3. 在 Claude Code 中输入 /requirement:start 开始第一个需求"
 else
     echo -e "${RED}  ❌ 验证失败！发现 $ERRORS 个问题。${NC}"
     echo ""

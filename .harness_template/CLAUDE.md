@@ -177,6 +177,7 @@ LLM 没有跨会话记忆。但团队的每一个"纠正"，都是一次宝贵�
 |-----|------|------|
 | `/requirement:new` | 新建需求，创建标准目录骨架和需求文档 | `/requirement:new 用户续费功能优化` |
 | `/requirement:write` | 使用外部产品文档 MCP 填充拆解需求 | `/requirement:write` |
+| `/requirement:start` | 新建与撰写需求整合指令，一步到位创建目录并基于文档拆解填写需求 | `/requirement:start docId=doc_123 用户续费` |
 | `/requirement:review` | 触发需求阶段门禁自检，生成检查结论 | `/requirement:review` |
 | `/requirement:rewrite` | 基于门禁反馈，重新拆解并更新需求 | `/requirement:rewrite` |
 
@@ -256,13 +257,11 @@ cd api && waterdrop new chat
 ### 10.4 日常需求研发流程
 
 ```
-# 1. 新建需求
-/requirement:new 某某功能需求
-
-# 2. 撰写需求文档（执行 /requirement:write 或手动补全）
+# 1. 启动需求（新建并撰写，或者分步执行 /requirement:new 和 /requirement:write）
+/requirement:start 某某功能需求
 # 生成并编辑 requirements/{req-id}/requirement.md
 
-# 3. 需求门禁
+# 2. 需求门禁
 /requirement:review
 
 # 4. 新建设计方案

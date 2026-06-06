@@ -10,8 +10,8 @@
 
 ```
 阶段 1: 需求定义 ⭐ [需求门禁]
-    └── 1.1 需求录入（/requirement:new）
-    └── 1.2 需求撰写（AI 补齐背景、目标、验收标准）
+    └── 1.1 需求录入（/requirement:new，或使用 /requirement:start 包含 1.1 和 1.2）
+    └── 1.2 需求撰写（AI 补齐背景、目标、验收标准，或由 /requirement:write 单独执行）
     └── 1.3 ⭐ 需求门禁（/requirement:review）
 
          ↓

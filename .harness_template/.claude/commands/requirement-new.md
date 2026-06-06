@@ -62,7 +62,7 @@ requirements/{requirement-id}/
 ✅ 需求目录已创建：requirements/{requirement-id}/
 
 📝 下一步：
-1. 运行 `/requirement:write` 命令基于 MCP 服务或文档自动拆解填写需求，或手动编辑 `requirements/{requirement-id}/requirement.md` 中的需求内容
+1. 运行 `/requirement:write` 命令基于 MCP 服务或文档自动拆解填写需求，或手动编辑 `requirements/{requirement-id}/requirement.md` 中的需求内容（你也可以使用 `/requirement:start` 一步完成新建与撰写）
 2. 完成后运行 `/requirement:review` 进行需求评审门禁检查
 3. 通过后运行 `/design:new` 进入设计阶段
 

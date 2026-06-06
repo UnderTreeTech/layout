@@ -19,6 +19,8 @@ context/project/
         │   ├── architecture.md           # 架构图、技术选型
         │   ├── api-guide.md              # 接口说明（非 IDL 的补充说明）
         │   ├── operations-runbook.md     # 运维手册（部署、监控、告警）
+        │   ├── docs/                     # 项目相关文档
+        │   │   └── api/                  # 接口文档存放处
         │   ├── sop/                      # 标准操作规程
         │   │   └── {操作名}.md
         │   └── experience/               # 踩坑经验（按日期命名）

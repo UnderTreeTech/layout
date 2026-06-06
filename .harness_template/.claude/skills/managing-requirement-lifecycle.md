@@ -25,7 +25,8 @@
 ### Step 2: 意图识别
 
 根据用户输入，识别以下意图之一：
-- `NEW_REQ`：新建需求 (`/requirement:new`)
+- `NEW_REQ`：新建需求 (`/requirement:new` 或 `/requirement:start`)
+- `WRITE_REQ`：撰写需求 (`/requirement:write`)
 - `REQ_GATE`：需求门禁检查 (`/requirement:review`)
 - `NEW_DESIGN`：新建设计 (`/design:new`)
 - `DESIGN_GATE`：设计门禁检查 (`/design:review`)

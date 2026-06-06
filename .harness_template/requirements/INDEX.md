@@ -64,6 +64,9 @@ requirements/
 # 新建需求（自动创建目录结构）
 /requirement:new
 
+# 新建并自动撰写需求
+/requirement:start
+
 # 恢复上下文（读取 status.json 恢复到上次状态）
 /requirement:continue
 

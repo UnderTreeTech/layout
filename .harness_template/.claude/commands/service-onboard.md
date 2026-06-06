@@ -72,6 +72,9 @@ context/project/api/chat/
 ├── operations-runbook.md       # 运维手册（空模板，待填写）
 ├── sop/
 │   └── .gitkeep
+├── docs/                       # 存放项目相关文档
+│   └── api/
+│       └── .gitkeep            # 存放接口文档
 └── experience/
     └── .gitkeep
 ```
@@ -129,6 +132,7 @@ context/project/api/chat/
   - context/project/api/chat/architecture.md
   - context/project/api/chat/api-guide.md
   - context/project/api/chat/operations-runbook.md
+  - context/project/api/chat/docs/api/.gitkeep
 
 📝 更新文件：
   - .service-matrix/dependencies.yaml（新增 chat 服务）

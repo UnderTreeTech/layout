@@ -54,6 +54,7 @@ context/project/api/{service-name}/
 ├── api-guide.md
 ├── operations-runbook.md
 ├── sop/.gitkeep
+├── docs/api/.gitkeep
 └── experience/.gitkeep
 ```
 
@@ -79,6 +80,7 @@ context/project/api/{service-name}/
   - context/project/api/{service-name}/architecture.md
   - context/project/api/{service-name}/api-guide.md
   - context/project/api/{service-name}/operations-runbook.md
+  - context/project/api/{service-name}/docs/api/.gitkeep
 
 📝 更新文件：
   - .service-matrix/dependencies.yaml

@@ -1,7 +1,7 @@
 # 需求撰写执行命令
 
 > **说明**：基于外部产品文档内容，按照标准化需求模板，由 AI 自动拆解并填写需求。
-> **前置条件**：已通过 `/requirement:new` 创建了需求目录和初始状态。
+> **前置条件**：已通过 `/requirement:new` 创建了需求目录和初始状态。（或者也可直接使用 `/requirement:start` 一步完成）
 > **触发**：用户输入 `/requirement:write`
 
 ---
@@ -10,7 +10,7 @@
 
 ### Step 1: 确定当前需求 ID 和文档路径
 1. 加载当前活动的 requirement id（可从 `.harness/local.yaml` 或询问用户获得）。**注意：如果用户输入的命令中自带了需求ID字段（如 `/requirement:write T123`），则直接使用该ID，无需询问用户**。
-2. 定位到对应的 `requirements/{requirement-id}/requirement.md`。如果该文件不存在，提示用户先执行 `/requirement:new`。
+2. 定位到对应的 `requirements/{requirement-id}/requirement.md`。如果该文件不存在，提示用户先执行 `/requirement:new` 或 `/requirement:start`。
 
 ### Step 2: 收集产品需求输入
 询问用户提供产品需求文档的 docId。当用户提供 docId 时，使用 knowledge-skill 的 cli 能力读取需求内容，执行命令为：`editor-cli read <docId>`。若用户直接以文本方式输入部分产品设计内容，也予以接受。
