@@ -27,4 +27,10 @@ type {{ .Name }} interface {
 
     // Count{{ .Name }} return count by condition from the database
     Count{{ .Name }}(ctx context.Context, condition map[string]interface{}) (num int, err error)
+
+    // BatchCount{{ .Name }} groups records by groupKey and returns the count of each group.
+    // The result is a slice of maps, where each map's key is the groupKey field value
+    // and the value is the number of records in that group.
+    // Example: groupKey="status" returns [{1: 10}, {2: 5}] meaning 10 records with status=1, 5 with status=2.
+    BatchCount{{ .Name }}(ctx context.Context, groupKey string, condition map[string]interface{}) (res []map[string]int, err error)
 }

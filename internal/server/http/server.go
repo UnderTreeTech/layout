@@ -34,6 +34,7 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
+// ServerInfo holds the HTTP server instance and its service registration metadata.
 type ServerInfo struct {
 	Server      *server.Server
 	ServiceInfo *registry.ServiceInfo
@@ -49,6 +50,9 @@ func init() {
 	sanitize = sanitizer.NewSanitizer()
 }
 
+// New creates, configures, and starts the HTTP server.
+// It loads server configuration, registers middlewares and routes, then returns
+// the running ServerInfo with the service's registry metadata.
 func New(s *service.Service) *ServerInfo {
 	srvConfig := &config.ServerConfig{}
 	parseConfig("server.http", srvConfig)
@@ -103,17 +107,21 @@ func ShouldBind(ctx *gin.Context, req interface{}) (err error) {
 	return
 }
 
+// parseConfig unmarshals the named configuration section into srvConfig.
+// Panics if the configuration cannot be parsed.
 func parseConfig(configName string, srvConfig *config.ServerConfig) {
 	if err := conf.Unmarshal(configName, srvConfig); err != nil {
 		panic(fmt.Sprintf("unmarshal http server config fail, err msg %s", err.Error()))
 	}
 }
 
+// registerMiddlewares attaches global HTTP middlewares (e.g. CORS) to the server.
 func registerMiddlewares(s *server.Server) {
 	//	register middleware here
 	s.Use(cors.Cors())
 }
 
+// router registers all API routes onto the server engine.
 func router(s *server.Server) {
 	registerAPI(s.Engine)
 }

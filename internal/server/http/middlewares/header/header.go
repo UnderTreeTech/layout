@@ -12,6 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// Header returns a Gin middleware that validates the Content-Type header.
+// For non-GET requests, it requires the Content-Type to be "application/json";
+// otherwise it aborts the request with HTTP 400 Bad Request.
 func Header() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := c.Request.Context()

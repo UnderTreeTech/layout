@@ -39,6 +39,11 @@ func GetLocaleLng(lng string) (locale string) {
 	return
 }
 
+// TranslateError translates a validator.ValidationErrors into a human-readable string
+// using the locale derived from the request's Accept-Language header.
+// For non-validation errors, it falls back to err.Error().
+// When a custom field-name mapping is registered for the current path and locale,
+// the generated message replaces the raw field name with the human-friendly alias.
 func TranslateError(ctx *gin.Context, err error) (errmsg string) {
 	if errs, ok := err.(validator.ValidationErrors); ok {
 		lng := GetLocaleLng(ctx.Request.Header.Get("Accept-Language"))

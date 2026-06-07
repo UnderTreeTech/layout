@@ -265,7 +265,7 @@ func (d *dao) CountTUser(ctx context.Context, condition map[string]interface{}) 
 		return
 	}
 
-	sqlStr, args, err := build.Where(condition).PlaceholderFormat(d.PlaceHolder()).ToSql()
+	sqlStr, args, err := build.PlaceholderFormat(d.PlaceHolder()).ToSql()
 	if err != nil {
 		return
 	}
@@ -286,7 +286,10 @@ func (d *dao) CountTUser(ctx context.Context, condition map[string]interface{}) 
 	return
 }
 
-// BatchCountTUser batch return count by condition from the database
+// BatchCountTUser groups records by groupKey and returns the count of each group.
+// The result is a slice of maps, where each map's key is the groupKey field value
+// and the value is the number of records in that group.
+// Example: groupKey="status" returns [{1: 10}, {2: 5}] meaning 10 records with status=1, 5 with status=2.
 func (d *dao) BatchCountTUser(ctx context.Context, groupKey string, condition map[string]interface{}) (res []map[string]int, err error) {
 	// init build
 	build := squirrel.Select("count(*) as num, " + groupKey).From(model.GetTUserTableName())
@@ -297,7 +300,7 @@ func (d *dao) BatchCountTUser(ctx context.Context, groupKey string, condition ma
 		return
 	}
 
-	sqlStr, args, err := build.Where(condition).GroupBy(groupKey).PlaceholderFormat(d.PlaceHolder()).ToSql()
+	sqlStr, args, err := build.GroupBy(groupKey).PlaceholderFormat(d.PlaceHolder()).ToSql()
 	if err != nil {
 		return
 	}

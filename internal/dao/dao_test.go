@@ -31,10 +31,9 @@ func TestMain(m *testing.M) {
 	for i := 0; i < retry; i++ {
 		if err := d.Ping(context.Background()); err == nil {
 			break
-
 		}
 
-		if i > retry {
+		if i == retry-1 {
 			panic("connect to database fail")
 		}
 

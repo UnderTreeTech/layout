@@ -79,10 +79,12 @@ func (d *dao) Ping(ctx context.Context) error {
 	return nil
 }
 
+// GetCollection returns a MongoDB collection by name.
 func (d *dao) GetCollection(name string) *mongo.Collection {
 	return d.mongo.GetCollection(name)
 }
 
+// Redis returns the underlying Redis client instance.
 func (d *dao) Redis() *redis.Redis {
 	return d.redis
 }
@@ -103,6 +105,8 @@ type txWrapper struct {
 	done bool
 }
 
+// Begin starts a new database transaction and stores it in the returned context.
+// The returned context must be passed to subsequent DAO calls to participate in the transaction.
 func (d *dao) Begin(ctx context.Context) (context.Context, error) {
 	tx, err := d.db.Begin(ctx)
 	if err != nil {
@@ -113,6 +117,9 @@ func (d *dao) Begin(ctx context.Context) (context.Context, error) {
 	return ctx, err
 }
 
+// Commit commits the active transaction stored in ctx.
+// After a successful commit, the txWrapper is marked as done so that
+// subsequent DAO calls automatically fall back to the connection pool.
 func (d *dao) Commit(ctx context.Context) error {
 	tw, err := d.getTxWrapper(ctx)
 	if err != nil {
@@ -126,6 +133,9 @@ func (d *dao) Commit(ctx context.Context) error {
 	return nil
 }
 
+// Rollback rolls back the active transaction stored in ctx.
+// After a successful rollback, the txWrapper is marked as done so that
+// subsequent DAO calls automatically fall back to the connection pool.
 func (d *dao) Rollback(ctx context.Context) error {
 	tw, err := d.getTxWrapper(ctx)
 	if err != nil {
@@ -240,6 +250,9 @@ func (d *dao) PlaceHolder() squirrel.PlaceholderFormat {
 	}
 }
 
+// Analytic parses the special operator keys (e.g. _orderBy, _groupBy, _having, _offset, _limit,
+// _like, _notLike, _notEq, _gt, _gte, _lt, _lte) from condition, applies them to the SelectBuilder,
+// removes those keys from condition, and finally appends the remaining condition as a WHERE clause.
 func (d *dao) Analytic(build squirrel.SelectBuilder, condition map[string]interface{}) (squirrel.SelectBuilder, error) {
 	// add order by
 	if orderBy, ok := condition[drivers.OpAction__order_by.String()]; ok {
@@ -329,6 +342,8 @@ func (d *dao) Analytic(build squirrel.SelectBuilder, condition map[string]interf
 		if gtCond, ok := gt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Gt(gtCond))
 			delete(condition, drivers.OpAction__gt.String())
+		} else {
+			return build, errors.New("_gt type need map[string]interface{}")
 		}
 	}
 
@@ -337,6 +352,8 @@ func (d *dao) Analytic(build squirrel.SelectBuilder, condition map[string]interf
 		if gtOrEqCond, ok := gtOrEq.(map[string]interface{}); ok {
 			build = build.Where(squirrel.GtOrEq(gtOrEqCond))
 			delete(condition, drivers.OpAction__gte.String())
+		} else {
+			return build, errors.New("_gte type need map[string]interface{}")
 		}
 	}
 
@@ -345,6 +362,8 @@ func (d *dao) Analytic(build squirrel.SelectBuilder, condition map[string]interf
 		if ltCond, ok := lt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Lt(ltCond))
 			delete(condition, drivers.OpAction__lt.String())
+		} else {
+			return build, errors.New("_lt type need map[string]interface{}")
 		}
 	}
 
@@ -361,6 +380,8 @@ func (d *dao) Analytic(build squirrel.SelectBuilder, condition map[string]interf
 	return build.Where(condition), nil
 }
 
+// AnalyticUpdate parses the special operator keys from condition, applies them to the UpdateBuilder,
+// removes those keys from condition, and finally appends the remaining condition as a WHERE clause.
 func (d *dao) AnalyticUpdate(build squirrel.UpdateBuilder, condition map[string]interface{}) (squirrel.UpdateBuilder, error) {
 	// add order by
 	if orderBy, ok := condition[drivers.OpAction__order_by.String()]; ok {
@@ -429,6 +450,8 @@ func (d *dao) AnalyticUpdate(build squirrel.UpdateBuilder, condition map[string]
 		if gtCond, ok := gt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Gt(gtCond))
 			delete(condition, drivers.OpAction__gt.String())
+		} else {
+			return build, errors.New("_gt type need map[string]interface{}")
 		}
 	}
 
@@ -437,6 +460,8 @@ func (d *dao) AnalyticUpdate(build squirrel.UpdateBuilder, condition map[string]
 		if gtOrEqCond, ok := gtOrEq.(map[string]interface{}); ok {
 			build = build.Where(squirrel.GtOrEq(gtOrEqCond))
 			delete(condition, drivers.OpAction__gte.String())
+		} else {
+			return build, errors.New("_gte type need map[string]interface{}")
 		}
 	}
 
@@ -445,6 +470,8 @@ func (d *dao) AnalyticUpdate(build squirrel.UpdateBuilder, condition map[string]
 		if ltCond, ok := lt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Lt(ltCond))
 			delete(condition, drivers.OpAction__lt.String())
+		} else {
+			return build, errors.New("_lt type need map[string]interface{}")
 		}
 	}
 
@@ -461,6 +488,8 @@ func (d *dao) AnalyticUpdate(build squirrel.UpdateBuilder, condition map[string]
 	return build.Where(condition), nil
 }
 
+// AnalyticDelete parses the special operator keys from condition, applies them to the DeleteBuilder,
+// removes those keys from condition, and finally appends the remaining condition as a WHERE clause.
 func (d *dao) AnalyticDelete(build squirrel.DeleteBuilder, condition map[string]interface{}) (squirrel.DeleteBuilder, error) {
 	// add order by
 	if orderBy, ok := condition[drivers.OpAction__order_by.String()]; ok {
@@ -529,6 +558,8 @@ func (d *dao) AnalyticDelete(build squirrel.DeleteBuilder, condition map[string]
 		if gtCond, ok := gt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Gt(gtCond))
 			delete(condition, drivers.OpAction__gt.String())
+		} else {
+			return build, errors.New("_gt type need map[string]interface{}")
 		}
 	}
 
@@ -537,6 +568,8 @@ func (d *dao) AnalyticDelete(build squirrel.DeleteBuilder, condition map[string]
 		if gtOrEqCond, ok := gtOrEq.(map[string]interface{}); ok {
 			build = build.Where(squirrel.GtOrEq(gtOrEqCond))
 			delete(condition, drivers.OpAction__gte.String())
+		} else {
+			return build, errors.New("_gte type need map[string]interface{}")
 		}
 	}
 
@@ -545,6 +578,8 @@ func (d *dao) AnalyticDelete(build squirrel.DeleteBuilder, condition map[string]
 		if ltCond, ok := lt.(map[string]interface{}); ok {
 			build = build.Where(squirrel.Lt(ltCond))
 			delete(condition, drivers.OpAction__lt.String())
+		} else {
+			return build, errors.New("_lt type need map[string]interface{}")
 		}
 	}
 

@@ -74,6 +74,7 @@ func allocateTranslator(locales []string) *Translator {
 	return t
 }
 
+// GetTranslator returns the package-level Translator singleton.
 func GetTranslator() *Translator {
 	return _translator
 }

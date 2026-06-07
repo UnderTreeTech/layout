@@ -21,6 +21,9 @@ type Response struct {
 	Datas   interface{} `json:"datas,omitempty"`
 }
 
+// Reply builds a unified HTTP response body.
+// It extracts the status code and message from err (nil err produces a success status),
+// attaches the trace ID from ctx, and wraps data in the Response struct.
 func Reply(ctx *gin.Context, data interface{}, err error) interface{} {
 	estatus := status.ExtractStatus(err)
 	reply := &Response{

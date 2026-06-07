@@ -16,6 +16,8 @@ type Sanitizer struct {
 
 var skipUrls = []string{}
 
+// NewSanitizer creates a new Sanitizer using the bluemonday UGC policy.
+// The UGC policy allows a safe subset of HTML typically used in user-generated content.
 func NewSanitizer() *Sanitizer {
 	sanitizer := &Sanitizer{
 		p: bluemonday.UGCPolicy(),
@@ -27,6 +29,8 @@ func NewSanitizer() *Sanitizer {
 	return sanitizer
 }
 
+// Sanitize performs XSS sanitization on all string fields of req.
+// Requests whose URL path is listed in skipUrls are skipped entirely.
 func (s *Sanitizer) Sanitize(ctx *gin.Context, req interface{}) {
 	if xslice.ContainString(skipUrls, ctx.Request.URL.Path) {
 		return

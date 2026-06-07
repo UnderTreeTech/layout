@@ -24,12 +24,23 @@ func Register(codes map[string]errors) {
 	}
 }
 
-// Message return the errmsg associate with the errcode
+// Message return the errmsg associate with the errcode.
+// When code is 0 (success), it always returns "ok" regardless of locale.
+// If the locale is not registered, it falls back to the Chinese ("zh-cn") locale.
 func Message(ctx *gin.Context, code int) string {
+	if code == 0 {
+		return "ok"
+	}
+
 	locale := utils.GetLocaleLng(ctx.Request.Header.Get("Accept-Language"))
 
 	if localCodes, ok := ecodes[locale]; ok {
 		return localCodes[code]
+	}
+
+	// fallback to zh-cn if the requested locale is not registered
+	if zhCodes, ok := ecodes["zh-cn"]; ok {
+		return zhCodes[code]
 	}
 
 	return ""
@@ -41,5 +52,4 @@ func init() {
 		"en":    enRequestErrMsg,
 		"zh-cn": zhRequestErrMsg,
 	})
-
 }
