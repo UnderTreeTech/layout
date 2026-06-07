@@ -74,22 +74,22 @@ type TUserColumns struct {
 	UserSource       string
 }
 
-// Get table name
+// GetTUserTableName returns the database table name for TUser.
 func GetTUserTableName() string {
 	return "t_user"
 }
 
-// Get field string
+// GetTUserFieldString returns all column names as a comma-separated string (for SELECT).
 func GetTUserFieldString() string {
 	return `id, user_id, user_account, user_name, en_name, gender, sign, email, avatar, pwd, birth, tel, user_desc, mobile, user_status, nation, province, city, county, address, init_flag, show_mask, field_show_control, label, canbe_chat, duty_id, secret_level, created_time, updated_time, user_source`
 }
 
-// Get field string slice
+// GetTUserFieldStringSlice returns insert column names as a string slice (excludes auto-increment id).
 func GetTUserFieldStringSlice() []string {
 	return strings.Split(`user_id, user_account, user_name, en_name, gender, sign, email, avatar, pwd, birth, tel, user_desc, mobile, user_status, nation, province, city, county, address, init_flag, show_mask, field_show_control, label, canbe_chat, duty_id, secret_level, created_time, updated_time, user_source`, ",")
 }
 
-// Get add field
+// GetTUserAddField returns the field values of tu as a slice for INSERT operations.
 func GetTUserAddField(tu *TUser) []interface{} {
 	return []interface{}{
 		tu.UserID,
@@ -124,7 +124,7 @@ func GetTUserAddField(tu *TUser) []interface{} {
 	}
 }
 
-// Get scan field
+// GetTUserScanField returns pointers to all fields of tu for use with rows.Scan().
 func GetTUserScanField(tu *TUser) []interface{} {
 	return []interface{}{
 		&tu.ID,

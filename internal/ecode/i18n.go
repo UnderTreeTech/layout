@@ -6,8 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// errors is a mapping of error code to its human-readable message string.
 type errors map[int]string
 
+// ecodes stores the registered error messages grouped by locale (e.g. "en", "zh-cn").
 var ecodes = make(map[string]errors)
 
 // Register register error msg

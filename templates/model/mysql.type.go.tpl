@@ -18,22 +18,22 @@ type {{ .Name }}Columns struct {
 {{- end }}
 }
 
-// Get table name
+// Get{{ .Name }}TableName returns the database table name for {{ .Name }}.
 func Get{{  .Name  }}TableName() string {
     return "{{  .Table.TableName  }}"
 }
 
-// Get field string
+// Get{{ .Name }}FieldString returns all column names as a comma-separated string (for SELECT).
 func Get{{ .Name }}FieldString () string {
     return `{{ colnames .Fields }}`
 }
 
-// Get field string slice
+// Get{{ .Name }}FieldStringSlice returns insert column names as a string slice (excludes auto-increment primary key).
 func Get{{ .Name }}FieldStringSlice () []string {
     return strings.Split(`{{colnames .Fields .PrimaryKey.Name }}`,",")
 }
 
-// Get add field
+// Get{{ .Name }}AddField returns the field values of {{ $short }} as a slice for INSERT operations.
 func Get{{ .Name }}AddField ( {{ $short }}  *{{ .Name }}) []interface{} {
     return [] interface{} {
             		{{- range .Fields }}
@@ -44,7 +44,7 @@ func Get{{ .Name }}AddField ( {{ $short }}  *{{ .Name }}) []interface{} {
             }
 }
 
-// Get scan field
+// Get{{ .Name }}ScanField returns pointers to all fields of {{ $short }} for use with rows.Scan().
 func Get{{ .Name }}ScanField ( {{ $short }}  *{{ .Name }}) []interface{} {
     return [] interface{} {
     		{{- range .Fields }}
@@ -53,7 +53,7 @@ func Get{{ .Name }}ScanField ( {{ $short }}  *{{ .Name }}) []interface{} {
     	}
 }
 
-// Get{{ .Name }}Columns get {{ .Name }}Columns
+// Get{{ .Name }}Columns returns a {{ .Name }}Columns struct with all column name mappings.
 func Get{{ .Name }}Columns () {{ .Name }}Columns {
     return {{ .Name }}Columns {
     		{{- range .Fields }}
