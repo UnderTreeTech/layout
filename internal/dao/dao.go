@@ -87,8 +87,21 @@ func (d *dao) Redis() *redis.Redis {
 	return d.redis
 }
 
-// attach transaction flag to context
+// errNoTx is a pre-allocated error returned when no active transaction is found in context.
+// Defined as a package-level variable to avoid repeated heap allocation on every non-transactional query.
+var errNoTx = errors.New("no active tx in context")
+
+// txKey attach transaction flag to context
 type txKey struct{}
+
+// txWrapper wraps *sql.Tx with a done flag.
+// When done is true (after Commit or Rollback), GetTxFromCtx will return an error,
+// causing DAO methods to automatically fall back to using the connection pool.
+// This eliminates the need for callers to manually create a new context after committing a transaction.
+type txWrapper struct {
+	tx   *sql.Tx
+	done bool
+}
 
 func (d *dao) Begin(ctx context.Context) (context.Context, error) {
 	tx, err := d.db.Begin(ctx)
@@ -96,35 +109,56 @@ func (d *dao) Begin(ctx context.Context) (context.Context, error) {
 		return ctx, err
 	}
 
-	ctx = context.WithValue(ctx, txKey{}, tx)
+	ctx = context.WithValue(ctx, txKey{}, &txWrapper{tx: tx})
 	return ctx, err
 }
 
 func (d *dao) Commit(ctx context.Context) error {
-	tx, err := d.GetTxFromCtx(ctx)
+	tw, err := d.getTxWrapper(ctx)
 	if err != nil {
 		return err
 	}
 
-	return tx.Commit()
+	if err = tw.tx.Commit(); err != nil {
+		return err
+	}
+	tw.done = true
+	return nil
 }
 
 func (d *dao) Rollback(ctx context.Context) error {
-	tx, err := d.GetTxFromCtx(ctx)
+	tw, err := d.getTxWrapper(ctx)
 	if err != nil {
 		return err
 	}
 
-	return tx.Rollback()
+	if err = tw.tx.Rollback(); err != nil {
+		return err
+	}
+	tw.done = true
+	return nil
 }
 
-func (d *dao) GetTxFromCtx(ctx context.Context) (*sql.Tx, error) {
-	tx, ok := ctx.Value(txKey{}).(*sql.Tx)
+// getTxWrapper retrieves the txWrapper from context (regardless of done state).
+// Used internally by Commit/Rollback.
+func (d *dao) getTxWrapper(ctx context.Context) (*txWrapper, error) {
+	tw, ok := ctx.Value(txKey{}).(*txWrapper)
 	if !ok {
-		return nil, errors.New("assert tx err")
+		return nil, errNoTx
+	}
+	return tw, nil
+}
+
+// GetTxFromCtx retrieves the active *sql.Tx from context.
+// Returns error if no transaction exists or the transaction has already been committed/rolled back.
+// When this returns an error, DAO methods will automatically use the connection pool instead.
+func (d *dao) GetTxFromCtx(ctx context.Context) (*sql.Tx, error) {
+	tw, ok := ctx.Value(txKey{}).(*txWrapper)
+	if !ok || tw.done {
+		return nil, errNoTx
 	}
 
-	return tx, nil
+	return tw.tx, nil
 }
 
 // NewDB new db instance according by db driver
