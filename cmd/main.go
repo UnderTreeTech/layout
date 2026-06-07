@@ -25,6 +25,8 @@ import (
 	"github.com/UnderTreeTech/waterdrop/pkg/registry/etcd"
 
 	"github.com/UnderTreeTech/waterdrop/pkg/conf"
+
+	_ "github.com/UnderTreeTech/layout/internal/ecode"
 )
 
 // run: go run main.go -conf=../configs/application.toml

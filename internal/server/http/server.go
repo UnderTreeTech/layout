@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 
+	"github.com/UnderTreeTech/layout/internal/ecode"
 	"github.com/UnderTreeTech/layout/internal/service"
 
 	"github.com/UnderTreeTech/waterdrop/pkg/server/http/config"
@@ -21,7 +22,6 @@ import (
 
 	"github.com/UnderTreeTech/layout/internal/server/http/middlewares/cors"
 	"github.com/UnderTreeTech/layout/internal/server/http/middlewares/sanitizer"
-	"github.com/UnderTreeTech/layout/internal/utils"
 	"github.com/UnderTreeTech/layout/internal/utils/reply"
 
 	"strconv"
@@ -85,8 +85,9 @@ func New(s *service.Service) *ServerInfo {
 func ShouldBind(ctx *gin.Context, req interface{}) (err error) {
 	if err = ctx.ShouldBind(req); err != nil {
 		var errmsg string
-		if errs, ok := err.(validator.ValidationErrors); ok {
-			errmsg = utils.TranslateError(ctx, errs)
+		if _, ok := err.(validator.ValidationErrors); ok {
+			//errmsg = utils.TranslateError(ctx, errs)
+			errmsg = ecode.Message(ctx, ecode.InvalidParam.Code())
 		} else {
 			errmsg = err.Error()
 		}

@@ -1,3 +1,7 @@
+// Deprecated: Package i18n provides validator error translation via go-playground/universal-translator.
+// This package is no longer actively used since ShouldBind now delegates error messages to the ecode package.
+// It is retained for backward compatibility but may be removed in a future version.
+// Use ecode.Message() for all user-facing error message internationalization instead.
 package i18n
 
 import (
