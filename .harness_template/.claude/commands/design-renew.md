@@ -12,8 +12,8 @@
 3. **读取门禁反馈**：读取 `gate-2-design-review.md` 中指出的不通过项和修改建议。收集用户附加的额外修改意见。
 4. **针对性修正设计文档 (`design.md`)**：
    - 检查核心章节是否完整：本次需求的改动服务范围、整体流程图或流程说明、架构方案（包含改动代码结构）、可能带来的性能瓶颈点分析。补充缺失部分。
-   - 修正与服务归属和通信协议不符的内容。如果是普通HTTP Service，移除 gRPC/proto 相关章节，严格对齐 `code-implementation-examples.md` 中的 HTTP Service 样板。
-   - 修正 gRPC service 的设计，确保符合 protobuf 规范和 `code-implementation-examples.md` 的样板。
+   - 修正与服务归属和通信协议不符的内容。如果是普通HTTP Service，移除 gRPC/proto 相关章节，严格对齐 `context/team/development-sop.md` 中的 HTTP Service 样板。
+   - 修正 gRPC service 的设计，确保符合 protobuf 规范和 `context/team/development-sop.md` 的样板。
    - 修正数据访问层设计，确保符合 DAO 样板。
    - 修正表结构设计，确保符合 `context/team/db-design.md` 规范（必须有自增主键，业务ID唯一索引，普通索引仅限文字建议避免多列索引，生成的 DDL 绝对不能有其他普通查询索引）。
 5. **同步修正任务拆解**：基于修正后的 `design.md`，重新生成或更新 `tasks/features.json` 进行任务拆解。

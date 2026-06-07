@@ -22,7 +22,7 @@
 
 - [ ] **追溯链完整**：每个需求条目（REQ-XXX）都有对应的设计决策。
 - [ ] **设计要素完整**：必须包含改动服务范围、整体流程说明、架构方案、性能瓶颈点分析、潜在风险及应对。
-- [ ] **接口协议一致性**：如果是 HTTP Service，**绝对禁止**包含 gRPC/proto 章节；如果是 gRPC Service，**必须**包含基于 `context/team/protobuf-style-guide.md` 规范的 IDL 设计。所有设计必须严格遵循 `code-implementation-examples.md` 中对应的样板（包括 HTTP、gRPC 以及数据访问层的规范）。
+- [ ] **接口协议一致性**：如果是 HTTP Service，**绝对禁止**包含 gRPC/proto 章节；如果是 gRPC Service，**必须**包含基于 `context/team/protobuf-style-guide.md` 规范的 IDL 设计。所有设计必须严格遵循 `context/team/development-sop.md` 中对应的样板（包括 HTTP、gRPC 以及数据访问层的规范）。
 - [ ] **数据库表设计规范**：若包含表结构设计，必须严格遵循 `context/team/db-design.md`。每个表必须带自增主键ID。除**主键自带索引**以及**实体表的业务ID建立唯一索引**外，**生成的 DDL 中绝对不能包含其他任何普通索引**。其他非主键索引只能以“文字建议”形式体现，且需检查是否建议了尽量避免使用的多列索引。
 - [ ] **服务边界清晰**：无跨域耦合，服务职责单一。
 - [ ] **IDL 风险评估**：冻结字段已确认，变更方案已设计。
