@@ -7,9 +7,9 @@ import (
 )
 
 // GetUserInfo 获取用户信息
-func (s *Service) GetUserInfo(ctx context.Context, uid string) (reply *m.GetUserInfoReply, err error) {
+func (s *Service) GetUserInfo(ctx context.Context, req *m.GetUserInfoReq) (reply *m.GetUserInfoReply, err error) {
 	return &m.GetUserInfoReply{
-		UserId:   "1",
+		UserId:   req.UserId,
 		UserName: "johnsun",
 	}, nil
 }

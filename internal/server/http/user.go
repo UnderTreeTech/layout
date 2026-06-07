@@ -11,10 +11,10 @@ import (
 // getUserInfo 查询用户信息
 func getUserInfo(ctx *gin.Context) {
 	req := &model.GetUserInfoReq{}
-	if err := ShouldBind(ctx, &req); err != nil {
+	if err := ShouldBind(ctx, req); err != nil {
 		return
 	}
 
-	resp, err := svc.GetUserInfo(ctx.Request.Context(), req.UserId)
+	resp, err := svc.GetUserInfo(ctx.Request.Context(), req)
 	ctx.JSON(http.StatusOK, reply.Reply(ctx, resp, err))
 }
