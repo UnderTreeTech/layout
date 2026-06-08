@@ -10,7 +10,7 @@
 
 ### 1.1 数据访问层 (Model / IFace / DAO)
 底层数据访问层采用接口隔离与依赖注入的设计，**必须通过 `xo` 等组件自动生成**：
-- **Model 层 (`internal/model`)**：只存放与数据库表一一对应的实体结构体，带有对应的 json 标签。**注意：表结构DDL只会使用int、varchar及text字段，对应过来go代码仅会有int及string类字段，绝对禁止因为业务层的出入参定义而篡改model的定义。**
+- **Model 层 (`internal/model`)**：只存放与数据库表一一对应的实体结构体，带有对应的 json 标签。**注意：Model 字段类型由 DDL 字段类型决定，Go 代码中会出现 uint / uint64 等 unsigned 类型，绝对禁止因为业务层的出入参定义而篡改 model 的定义。**
 - **IFace 层 (`internal/dao/iface`)**：定义 DAO 层必须实现的底层操作接口，用于实现接口隔离。
 - **DAO 注册与组合 (`internal/dao/dao.go`)**：在基础 DAO 文件中，必须将 `iface` 定义的各个领域接口组合进主 `Dao` 接口中，以便 Service 层统一注入使用。
   ```go
@@ -27,6 +27,26 @@
   }
   ```
 - **DAO 实现层 (`internal/dao`)**：负责具体的 SQL 拼接（使用 `squirrel` 库）与数据库交互。**注意：Add新增数据不能定义返回结果获取ID，比如从 `result.LastInsertId()` 获取ID，因为有些国产数据库并不支持返回插入的ID。**所有 SQL 操作必须支持基于上下文传递的事务传递能力（检查 `tx` 的存在）。
+
+> ⚠️ **DAO condition 常量红线**：
+> Service 层调用 DAO 时，condition map 中的特殊操作 key 和排序字段名**禁止硬编码字符串**，必须使用常量：
+>
+> ```go
+> // ❌ 错误写法：硬编码字符串
+> s.dao.FindTGroups(ctx, map[string]interface{}{
+>     "_orderBy": "sort_order asc",
+>     "_limit":   uint64(1),
+> })
+>
+> // ✅ 正确写法：使用常量
+> s.dao.FindTGroups(ctx, map[string]interface{}{
+>     drivers.OpAction__order_by.String(): model.GetTGroupColumns().SortOrder + " asc",
+>     drivers.OpAction__limit.String():    uint64(1),
+> })
+> ```
+>
+> 常用 drivers 操作常量：`OpAction__order_by`、`OpAction__limit`、`OpAction__offset`、`OpAction__group_by`、`OpAction__like`
+> 字段名一律从 `model.GetXxxColumns().FieldName` 获取
 
 > **AI 代码生成强制约束**：
 > 1. 凡是涉及 DDL 或 DML 变更导致需要更新 DAO、IFace 和 Model 代码时，**强烈建议**通过 XO 命令行工具在本地生成。
@@ -140,6 +160,8 @@ func (s *Service) AddUserBiz(ctx context.Context, req *user.UserInfoBizReq) (rep
   - **2. 定义入参/出参 (`http/model`)**：在 `internal/server/http/model/` 目录下（或指定的 http dto 目录），专门定义该接口的 Request 和 Response 结构体。**注意：HTTP出入参model定义仅允许创建在internal/server/http/model/目录下**。
   - **3. Controller 实现 (`http` 目录)**：在 `internal/server/http/{module}.go` 中实现控制器逻辑（如 `http/user.go`）。只负责：`解析 Gin 上下文参数 -> 转换为业务参数 -> 调用 internal/service 的逻辑层方法 -> 封装标准响应返回`。**严禁写重度业务逻辑或直接调 DAO**。
   - **4. 业务下沉 (`internal/service`)**：必须将核心业务下沉到 `internal/service` 中的普通 Service 方法中处理。**注意：写service逻辑有需要定义struct使用时，必须放在 `{harness_name}/api/{service_name}/internal/model/` 目录下，禁止在业务service文件中定义struct。**业务service需要引用HTTP请求的出入参model定义时，重命名HTTP出入参定义model目录导入命名，如 `m "github.com/UnderTreeTech/layout/internal/server/http/model"`。service函数非复杂接口，入参尽量不要超过3个。
+
+> ⚠️ **HTTP 路由风格红线**：禁止 RESTful 路径参数**：不得使用 `/api/group/:id`、`/api/agent/:id/move` 这类把资源 ID 放在 URL 路径中的风格。
 
 > 📄 **HTTP Service 完整闭环样板代码**
 
@@ -304,11 +326,31 @@ func New(d dao.Dao, cfg *Config) *Service {
 - **场景**：服务内部的公共业务逻辑抽取，供 HTTP Controller、gRPC Service 或定时任务、MQ 消费者调用。
 - **套路规范**：直接在 `internal/service/` 下建立对应的业务文件实现即可，纯 Go 方法，无对外网络协议绑定。
 
+> ⚠️ **Service 层错误变量命名红线**：
+> - 函数使用 named return `err` 时，函数体内**禁止**使用 `ferr`/`qerr`/`cerr`/`aerr`/`uerr` 等别名。
+> - Go 规范允许 `:=` 在函数体内**重声明** named return 参数（只要至少有一个新变量），因此直接用 `err` 即可：
+>
+> ```go
+> // ❌ 错误写法：不必要的别名
+> groups, ferr := s.dao.FindTGroups(ctx, cond)
+> if ferr != nil { err = ecode.OperationFailed; return }
+>
+> // ✅ 正确写法：:= 合法重声明 named return err
+> groups, err := s.dao.FindTGroups(ctx, cond)
+> if err != nil { err = ecode.OperationFailed; return }
+> ```
+>
+> **唯一例外**：defer 闭包中 `if err := s.dao.Rollback(ctx); err != nil {` 创建新作用域局部变量，不影响外层 named return，这是正确的。
+
 ## 2. 核心红线 (AI 必须遵守)
 
 1. **以服务级文档为尊**：`api/{service_name}/README.md` 是该服务的绝对规范源，任何生成代码的结构、命名、分层均需照抄该文档的范式，**不得发明所谓的 biz 层或凭空改造目录结构**。
 2. **规范 IDL 编写**：对于 gRPC 接口，AI 应主动基于 `context/team/protobuf-style-guide.md` 规范给出 proto 变更，必须提示执行 `protoc` 生成代码命令。
 3. **大仓导入路径准确性**：在生成或修改 Go 导入路径时，必须匹配当前大仓 `go.mod` 中定义的实际 module 名称及当前工作目录地址。**注意：在进行 1:1 像素级复制模板代码时，必须将模板中的包导入地址（如 `coder/api/user/internal/...`）智能替换为当前工作目录的准确地址（注意：`github.com` 等第三方外部包必须原样保留，绝不允许替换），严禁生搬硬套导致编译失败。**
+4. **错误码不重复占用公共段**：各服务的错误码码段起始值不代表该码号可直接使用。**公共错误码段（100000-100999）已包含"内部错误"、"参数非法"等通用错误，各服务码段（如 101xxx、102xxx）不得再重复定义同名/同义错误码**。详见 `context/team/error-code.md`。
+5. **DDL 字段类型必须对照规范**：编写 DDL 时必须逐字段对照 `context/team/db-design.md`，主键用 `bigint unsigned`，时间戳用 `bigint unsigned`，非负数用 `unsigned` 变体，所有字段 `NOT NULL` 有默认值，DDL 仅保留主键索引。
+6. **DAO condition 禁止硬编码**：condition map 中特殊操作 key 必须用 `drivers.OpAction__xxx.String()` 常量，排序字段名必须从 `model.GetXxxColumns().FieldName` 获取，禁止硬编码 `"_orderBy"` 或 `"sort_order asc"` 等字符串。
+7. **Service 层错误变量统一用 `err`**：函数体内 named return 参数 `err` 可通过 `:=` 合法重声明，禁止使用 `ferr`/`qerr`/`cerr` 等别名。唯一例外是 defer 闭包内的 `if err :=` 局部变量。
 
 ## 3. 代码收尾要求
 
