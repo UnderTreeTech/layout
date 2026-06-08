@@ -4,7 +4,16 @@
 // {{ .Comment }}
 {{- end -}}
 
+// {{ .Name }}Iface is the aggregated interface for {{ .Name }} DAO,
+// embedding the base interface and all index-based interfaces.
 type {{ .Name }} interface {
+    {{ .Name }}BaseIface
+{{- range .Indexes }}
+    {{ .FuncName }}Iface
+{{- end }}
+}
+
+type {{ .Name }}BaseIface interface {
     /********************Generate By XO: write method segment*********************/
     // Add{{ .Name }} add the {{ .Name }} to the database
     Add{{ .Name }}(ctx context.Context, {{$short}} *model.{{.Name}}) (err error)

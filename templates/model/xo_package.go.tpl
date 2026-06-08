@@ -5,3 +5,4 @@ package {{ .Package }}
 import (
 	"strings"
 )
+

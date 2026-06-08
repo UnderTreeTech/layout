@@ -56,7 +56,7 @@ func Token(r *redis.Redis, noTokenRoutes []string) gin.HandlerFunc {
 		var err error
 		// For GET requests with multipart/form-data (no boundary), ShouldBind would
 		// fail; fall back to query-string binding.
-		if c.Request.Method == http.MethodGet && c.ContentType() == "multipart/form-data" {
+		if c.Request.Method == http.MethodGet {
 			err = c.ShouldBindQuery(base)
 		} else {
 			err = c.Bind(base) // Bind drains the tee body into buf automatically
