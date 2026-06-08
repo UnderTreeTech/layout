@@ -56,26 +56,11 @@ cd api && waterdrop new {service-name}
 请确认 waterdrop 已正确安装：go install github.com/UnderTreeTech/waterdrop/cmd/waterdrop@latest
 ```
 
-### Step 2.5: 根据通信协议清理代码模板
-
-根据用户选择的通信协议（HTTP 或 gRPC），清理 `waterdrop new` 生成的默认模板代码：
-
-- **如果通信协议为 gRPC (gRPC Service)**：
-  1. 修改入口文件（如 `cmd.go` 或 `cmd/main.go`），**去掉 HTTP service 的注册**及其所有相关实现文件、目录。
-  2. **移除 `api` 整个目录**（里面有 demo 的 proto 定义）。
-  3. 修改 `internal/server/grpc/server.go`，确保**注册本服务实现的 proto service**。
-  4. **删除** `internal/service/demo.go` 文件。
-  
-- **如果通信协议为 HTTP (HTTP Service)**：
-  1. 不需要注册 gRPC service。
-  2. 修改入口文件，**去掉 gRPC service 的注册**。
-  3. **删除 gRPC 相关实现及文件、目录**。
-
-### Step 2.8: 将服务加入工作区
+### Step 3: 将服务加入工作区
 
 将新生成的服务路径（如 `./api/{service-name}`）追加到仓库根目录的 `go.work` 文件中的 `use` 块内。
 
-### Step 3: 生成服务知识库目录
+### Step 4: 生成服务知识库目录
 
 > ⚠️ **关键路径约束**：知识库目录必须创建在 `context/project/api/{service-name}/` 下，
 > **绝对不能**创建在 `api/{service-name}/` 业务代码目录下。
@@ -103,7 +88,7 @@ context/project/api/chat/
 - 错误码段
 - 上下游依赖关系
 
-### Step 4: 更新服务矩阵
+### Step 5: 更新服务矩阵
 
 在 `.service-matrix/dependencies.yaml` 的 `services:` 下**追加**新服务配置：
 
@@ -123,7 +108,7 @@ context/project/api/chat/
 
 同时在 `modules:` 下追加模块配置（如果所属模块不存在）。
 
-### Step 5: 更新项目 INDEX.md
+### Step 6: 更新项目 INDEX.md
 
 在 `context/project/api/INDEX.md` 的**服务列表表格**中追加新服务行：
 
@@ -137,7 +122,7 @@ context/project/api/chat/
 
 **注意**：此文件是 AI 按"团队 → 项目 → 模块"路径定位服务的入口，新服务不在此登记则 AI 无法感知其存在。
 
-### Step 7: 在 error-code.md 中预留错误码段
+### Step 7: 预留错误码段
 
 在 `context/team/error-code.md` 的错误码登记表中，为新服务预留码段。
 
@@ -160,10 +145,11 @@ context/project/api/chat/
   - context/team/error-code.md（预留 {起始码}-{结束码} 给 chat）
 
 🔜 下一步（需要手动完成）：
-  1. 在 api/idl/chat/ 下定义 proto 文件并生成代码
-  2. 在 context/project/api/chat/INDEX.md 中补充关键约束
-  3. 如果有跨服务调用，更新 .service-matrix/dependencies.yaml 中的 upstream/downstream
-  4. 运行 /service:deps 验证服务依赖关系
+  1. 根据通信协议清理 waterdrop 生成的默认模板代码（如去除不需要的 HTTP/gRPC 注册、删除 demo 文件等）
+  2. 在 api/idl/chat/ 下定义 proto 文件并生成代码
+  3. 在 context/project/api/chat/INDEX.md 中补充关键约束
+  4. 如果有跨服务调用，更新 .service-matrix/dependencies.yaml 中的 upstream/downstream
+  5. 运行 /service:deps 验证服务依赖关系
 ```
 
 ---
@@ -204,13 +190,13 @@ context/project/api/chat/
 Claude Code 将自动完成：
 1. 交互式询问协议/依赖等信息
 2. 执行 `cd api && waterdrop new chat` 生成业务代码
-3. 根据协议（HTTP/gRPC）清理业务代码默认模板
-4. 将新服务添加到 `go.work`（如 `./api/chat`）
-5. 创建 `context/project/api/chat/` 知识库目录
-6. 更新 `.service-matrix/dependencies.yaml`
-7. 更新 `context/project/api/INDEX.md`
-8. 预留错误码段
+3. 将新服务添加到 `go.work`（如 `./api/chat`）
+4. 创建 `context/project/api/chat/` 知识库目录
+5. 更新 `.service-matrix/dependencies.yaml`
+6. 更新 `context/project/api/INDEX.md`
+7. 预留错误码段
 
 之后用户只需手动完成：
+- 根据通信协议清理 `waterdrop new` 生成的默认模板代码（如去除不需要的 HTTP/gRPC 注册、删除 demo 文件等）
 - 在 `api/idl/chat/` 下定义 proto 文件
 - 在 `context/project/api/chat/INDEX.md` 中补充关键约束

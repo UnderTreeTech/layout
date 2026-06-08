@@ -25,10 +25,21 @@
 
 ### Step 1: 收集服务基本信息
 
-交互式询问（同 `/service:onboard`）：
-- 服务名、描述、通信协议（HTTP/gRPC）
-- 上游/下游服务
-- 错误码段起始值
+如果用户没有提供，交互式询问（同 `/service:onboard`）：
+
+```
+请提供新服务的基本信息：
+
+1. 服务名（英文小写，如 chat）：
+2. 服务描述（中文，如 即时通讯服务）：
+3. 通信协议：
+   [1] HTTP（对外暴露，使用 grpc-gateway）
+   [2] gRPC（内部服务）
+4. 所属项目（如 api）：
+5. 上游服务（哪些服务会调用本服务，逗号分隔，如 order,user）：
+6. 下游服务（本服务会调用哪些服务，逗号分隔，如 user）：
+7. 错误码段起始值（参考 context/team/error-code.md，如 5000）：
+```
 
 ### Step 2: 验证业务代码目录存在
 
@@ -39,35 +50,11 @@
 - 目录**存在**：继续
 - 目录**不存在**：提示用户先执行 `cd api && waterdrop new {service_name}`
 
-### Step 2.5: 根据通信协议清理代码模板
-
-验证目录存在后，根据用户选择的通信协议（HTTP 或 gRPC），检查并清理 `waterdrop new` 生成的默认模板代码：
-
-- **如果通信协议为 gRPC (gRPC Service)**：
-  1. 修改入口文件（如 `cmd.go` 或 `cmd/main.go`），**去掉 HTTP service 的注册**及其所有相关实现文件、目录。
-  2. **移除 `api` 整个目录**（里面有 demo 的 proto 定义）。
-  3. 修改 `internal/server/grpc/server.go`，确保**注册本服务实现的 proto service**，同时修改注册的服务名（Name）为 `service.{service-name}.v1`。
-  4. **删除** `internal/service/` 目录下所有由框架自动生成的示例业务逻辑文件（如 `demo.go`, `user.go` 等），确保该目录是干净的。
-  
-- **如果通信协议为 HTTP (HTTP Service)**：
-  1. 不需要注册 gRPC service。
-  2. 修改入口文件，**去掉 gRPC service 的注册**。
-  3. 修改 `internal/server/http/server.go`，确保 `registry.ServiceInfo` 中的 `Name` 字段被设置为 `server.http.{service-name}`（其中 `{service-name}` 是当前创建的服务名）。
-  4. **删除 gRPC 相关实现及文件、目录**。
-
-### Step 2.6: 编译验证
-
-清理完成后，必须在对应的业务服务目录（`api/{service-name}`）下执行编译，确保清理操作没有破坏代码的连通性：
-```bash
-cd api/{service-name} && go build ./...
-```
-- 如果编译失败，说明清理过程有遗漏（例如引用了已被删除的 demo 包），必须自动修正相应的代码直到编译通过。
-
-### Step 2.8: 将服务加入工作区
+### Step 3: 将服务加入工作区
 
 将服务路径（如 `./api/{service-name}`）追加到仓库根目录的 `go.work` 文件中的 `use` 块内（如果尚未添加）。
 
-### Step 3: 生成知识库目录
+### Step 4: 生成知识库目录
 
 > ⚠️ **关键路径约束**：知识库目录必须创建在 `context/project/api/{service-name}/` 下，
 > **绝对不能**创建在 `api/{service-name}/` 业务代码目录下。
@@ -86,19 +73,19 @@ context/project/api/{service-name}/
 └── experience/.gitkeep
 ```
 
-### Step 4: 更新服务矩阵
+### Step 5: 更新服务矩阵
 
 在 `.service-matrix/dependencies.yaml` 追加服务配置。
 
-### Step 5: 更新项目 INDEX.md
+### Step 6: 更新项目 INDEX.md
 
 在 `context/project/api/INDEX.md` 的服务列表表格中追加新服务行，并更新服务间依赖关系图。
 
-### Step 6: 预留错误码段
+### Step 7: 预留错误码段
 
 在 `context/team/error-code.md` 中预留码段。
 
-### Step 7: 输出完成摘要
+### Step 8: 输出完成摘要
 
 ```
 ✅ {service-name} 服务 Harness 制品已生成！
@@ -117,9 +104,10 @@ context/project/api/{service-name}/
   - context/team/error-code.md
 
 🔜 下一步：
-  1. 在 api/idl/{service-name}/ 下定义 proto 文件
-  2. 在 context/project/api/{service-name}/INDEX.md 中补充关键约束
-  3. 运行 /service:deps 验证服务依赖关系
+  1. 根据通信协议清理 waterdrop 生成的默认模板代码（如去除不需要的 HTTP/gRPC 注册、删除 demo 文件等），并在清理后执行 `cd api/{service-name} && go build ./...` 验证编译通过
+  2. 在 api/idl/{service-name}/ 下定义 proto 文件
+  3. 在 context/project/api/{service-name}/INDEX.md 中补充关键约束
+  4. 运行 /service:deps 验证服务依赖关系
 ```
 
 ---
