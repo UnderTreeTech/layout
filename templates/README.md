@@ -12,7 +12,7 @@
 
 **xo项目已更换项目名，目前叫dbtpl。当前的xo依赖特定提交，安装命令如下。可以install后自行rename为xo。**
 
-`go install github.com/xo/dbtpl@9a3ddc1e1407243ea7d30a3956073fcbeaa8d7bc`
+`go install github.com/UnderTreeTech/xo@be7abe538c6b608b0b4158d9b075d76658790d28`
 
 2、生成代码操作步骤：
 可将所有基于标准SQL的表都在MySQL里创建一下，不论是kingbase、达梦还是其他数据库
@@ -21,15 +21,15 @@
   
 - 生成model
 
-`xo mysql://root@127.0.0.1:3306/db_global -o ./model --template-path /Users/sunqiang1/export/apps/golang/360/conversation/templates/model`
+`xo mysql://root@127.0.0.1:3306/db_global -o ./model --template-path /Users/johnsun/export/apps/golang/github/layout/templates/model`
 
 - 生成dao实现
 
-`xo mysql://root@127.0.0.1:3306/db_global -o ./dao --template-path /Users/sunqiang1/export/apps/golang/360/conversation/templates/dao`
+`xo mysql://root@127.0.0.1:3306/db_global -o ./dao --template-path /Users/johnsun/export/apps/golang/github/layout/templates/dao`
 
 - 生成iface定义
 
-`xo mysql://root@127.0.0.1:3306/db_global -o ./iface --template-path /Users/sunqiang1/export/apps/golang/360/conversation/templates/iface`
+`xo mysql://root@127.0.0.1:3306/db_global -o ./iface --template-path /Users/johnsun/export/apps/golang/github/layout/templates/iface`
 
 - 将生成的文件copy至项目对应文件夹
 
