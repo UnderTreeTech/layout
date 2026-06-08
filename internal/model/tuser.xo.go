@@ -209,11 +209,6 @@ func GetTUsersByUserNameEmailIndexFields() []string {
     return []string{ "user_name", "email" }
 }
 
-// GetTUserByUserAccountIndexFields returns the column names for index 'unq_account'.
-func GetTUserByUserAccountIndexFields() []string {
-    return []string{ "user_account" }
-}
-
 // GetTUserByUserIDIndexFields returns the column names for index 'unq_uid'.
 func GetTUserByUserIDIndexFields() []string {
     return []string{ "user_id" }
