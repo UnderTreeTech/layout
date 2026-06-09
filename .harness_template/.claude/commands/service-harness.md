@@ -38,7 +38,7 @@
 4. 所属项目（如 api）：
 5. 上游服务（哪些服务会调用本服务，逗号分隔，如 order,user）：
 6. 下游服务（本服务会调用哪些服务，逗号分隔，如 user）：
-7. 错误码段起始值（参考 context/team/error-code.md，如 5000）：
+7. 全局错误码段起始值（参考 context/team/error-code.md，为新服务在 api/ecode 分配空间，如 101000）：
 ```
 
 ### Step 2: 验证业务代码目录存在
@@ -83,7 +83,7 @@ context/project/api/{service-name}/
 
 ### Step 7: 预留错误码段
 
-在 `context/team/error-code.md` 中预留码段。
+在 `context/team/error-code.md` 中预留全局码段，并提醒开发后续在 `api/ecode/ecode.csv` 中添加。
 
 ### Step 8: 输出完成摘要
 

@@ -17,7 +17,7 @@
   - 从 go.work 中移除该服务路径
   - 从 .service-matrix/dependencies.yaml 中移除该服务
   - 从 context/project/api/INDEX.md 中移除该服务行和依赖关系
-  - 从 context/team/error-code.md 中标记该错误码段为已废弃
+  - 从 context/team/error-code.md 中标记该全局错误码段为已废弃
 
 ⚠️ 注意：本命令不会删除业务代码目录 api/{service-name}/，请手动处理。
 
@@ -63,9 +63,9 @@
 - 移除服务列表表格中该服务的行
 - 更新服务间依赖关系图（移除该服务相关的连线）
 
-### Step 7: 标记错误码段废弃
+### Step 7: 标记全局错误码段废弃
 
-在 `context/team/error-code.md` 中，将该服务的错误码段标记为 `[已废弃]`，但不删除（保留审计记录）。
+在 `context/team/error-code.md` 中，将该服务的全局错误码段标记为 `[已废弃]`，但不删除（保留审计记录）。并在 `api/ecode/ecode.csv` 中做对应下线说明或注释。
 
 ### Step 8: 输出完成摘要
 
@@ -79,7 +79,7 @@
   - go.work（移除服务路径）
   - .service-matrix/dependencies.yaml（移除服务配置）
   - context/project/api/INDEX.md（移除服务行和依赖图）
-  - context/team/error-code.md（错误码段标记为已废弃）
+  - context/team/error-code.md（全局错误码段标记为已废弃）
 
 ⚠️ 需要手动处理：
   - 删除业务代码目录 api/{service-name}/（如确认不再需要）
@@ -123,7 +123,7 @@
 4. 从 `go.work` 中移除所有 `api/*` 相关的服务路径
 5. 重置 `.service-matrix/dependencies.yaml` 中 `services:` 和 `modules:` 为空
 6. 重置 `context/project/api/INDEX.md` 服务列表和依赖图为空
-7. 在 `context/team/error-code.md` 中将所有服务错误码段标记为已废弃
+7. 在 `context/team/error-code.md` 中将所有服务全局错误码段标记为已废弃
 
 ```
 ⚠️ 即将下线所有服务（共 {n} 个）：

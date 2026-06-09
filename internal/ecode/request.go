@@ -5,9 +5,9 @@ import "github.com/UnderTreeTech/waterdrop/pkg/status"
 // Pre-defined business error codes.
 var (
 	// InternalError indicates an internal server error or network issue.
-	InternalError = status.New(10000000, "网络开小差，请稍后重试")
+	InternalError = status.New(100000, "网络开小差，请稍后重试")
 	// InvalidParam indicates the request parameters are invalid or failed validation.
-	InvalidParam = status.New(10000001, "参数错误")
+	InvalidParam = status.New(100001, "参数错误")
 )
 
 // enRequestErrMsg holds the English translations for each error code.

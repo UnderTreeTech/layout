@@ -23,7 +23,7 @@ layout/
 ├── configs/      # 配置文件
 ├── internal/     # 内部业务逻辑（禁止外部引用）
 │   ├── dao/      # 数据访问层
-│   ├── ecode/    # 错误码定义
+│   ├── ecode/    # 自定义错误码或全局错误码文案覆盖
 │   ├── i18n/     # 国际化
 │   ├── model/    # 数据模型
 │   ├── server/   # HTTP/gRPC 服务器
@@ -54,5 +54,5 @@ layout/
 
 1. `internal/` 目录下的包**禁止**被外部项目直接引用
 2. 数据库操作必须通过 `internal/dao/` 层，禁止在 service 层直接操作 DB
-3. 错误码必须使用 `internal/ecode/` 中定义的常量
+3. 错误码必须统一引用外部 `api/ecode` 服务的常量，并在 `internal/ecode/` 存放特有自定义或注册覆盖文案
 4. HTTP 响应格式统一使用 `internal/utils/reply/` 中的工具函数

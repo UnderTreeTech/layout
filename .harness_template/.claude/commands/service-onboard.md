@@ -37,7 +37,7 @@
 4. 所属项目（如 api）：
 5. 上游服务（哪些服务会调用本服务，逗号分隔，如 order,user）：
 6. 下游服务（本服务会调用哪些服务，逗号分隔，如 user）：
-7. 错误码段起始值（参考 context/team/error-code.md，如 5000）：
+7. 全局错误码段起始值（参考 context/team/error-code.md，为新服务在 api/ecode 分配空间，如 101000）：
 ```
 
 ### Step 2: 自动执行 waterdrop new 生成业务代码
@@ -122,9 +122,9 @@ context/project/api/chat/
 
 **注意**：此文件是 AI 按"团队 → 项目 → 模块"路径定位服务的入口，新服务不在此登记则 AI 无法感知其存在。
 
-### Step 7: 预留错误码段
+### Step 7: 预留全局错误码段
 
-在 `context/team/error-code.md` 的错误码登记表中，为新服务预留码段。
+在 `context/team/error-code.md` 的错误码登记表中，为新服务预留全局码段，提醒开发后续在 `api/ecode/ecode.csv` 中添加。
 
 ### Step 8: 输出完成摘要
 
@@ -142,7 +142,7 @@ context/project/api/chat/
   - go.work（添加 ./api/chat）
   - .service-matrix/dependencies.yaml（新增 chat 服务）
   - context/project/api/INDEX.md（新增 chat 服务条目）
-  - context/team/error-code.md（预留 {起始码}-{结束码} 给 chat）
+  - context/team/error-code.md（预留全局 {起始码}-{结束码} 给 chat）
 
 🔜 下一步（需要手动完成）：
   1. 根据通信协议清理 waterdrop 生成的默认模板代码（如去除不需要的 HTTP/gRPC 注册、删除 demo 文件等）
@@ -194,7 +194,7 @@ Claude Code 将自动完成：
 4. 创建 `context/project/api/chat/` 知识库目录
 5. 更新 `.service-matrix/dependencies.yaml`
 6. 更新 `context/project/api/INDEX.md`
-7. 预留错误码段
+7. 预留全局错误码段
 
 之后用户只需手动完成：
 - 根据通信协议清理 `waterdrop new` 生成的默认模板代码（如去除不需要的 HTTP/gRPC 注册、删除 demo 文件等）

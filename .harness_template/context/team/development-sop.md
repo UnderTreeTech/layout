@@ -347,7 +347,7 @@ func New(d dao.Dao, cfg *Config) *Service {
 1. **以服务级文档为尊**：`api/{service_name}/README.md` 是该服务的绝对规范源，任何生成代码的结构、命名、分层均需照抄该文档的范式，**不得发明所谓的 biz 层或凭空改造目录结构**。
 2. **规范 IDL 编写**：对于 gRPC 接口，AI 应主动基于 `context/team/protobuf-style-guide.md` 规范给出 proto 变更，必须提示执行 `protoc` 生成代码命令。
 3. **大仓导入路径准确性**：在生成或修改 Go 导入路径时，必须匹配当前大仓 `go.mod` 中定义的实际 module 名称及当前工作目录地址。**注意：在进行 1:1 像素级复制模板代码时，必须将模板中的包导入地址（如 `coder/api/user/internal/...`）智能替换为当前工作目录的准确地址（注意：`github.com` 等第三方外部包必须原样保留，绝不允许替换），严禁生搬硬套导致编译失败。**
-4. **错误码不重复占用公共段**：各服务的错误码码段起始值不代表该码号可直接使用。**公共错误码段（100000-100999）已包含"内部错误"、"参数非法"等通用错误，各服务码段（如 101xxx、102xxx）不得再重复定义同名/同义错误码**。详见 `context/team/error-code.md`。
+4. **全局错误码统一与服务级覆盖**：错误码统一定义在外部的 `api/ecode` 服务中，各服务必须引用该全局服务的错误码。**公共错误码段（100000-100999）已包含"内部错误"、"参数非法"等通用错误。**各服务内部的 `internal/ecode` 目录用来存放特有自定义错误码，或通过相同的 code 不同文案来实现对全局错误码文案的覆盖。**注意：在服务内的 `i18n.go` 中，必须优先注册全局错误码，然后再注册自定义错误码进行覆盖，详见 `context/team/error-code.md`。**
 5. **DDL 字段类型必须对照规范**：编写 DDL 时必须逐字段对照 `context/team/db-design.md`，主键用 `bigint unsigned`，时间戳用 `bigint unsigned`，非负数用 `unsigned` 变体，所有字段 `NOT NULL` 有默认值，DDL 仅保留主键索引。
 6. **DAO condition 禁止硬编码**：condition map 中特殊操作 key 必须用 `drivers.OpAction__xxx.String()` 常量，排序字段名必须从 `model.GetXxxColumns().FieldName` 获取，禁止硬编码 `"_orderBy"` 或 `"sort_order asc"` 等字符串。
 7. **Service 层错误变量统一用 `err`**：函数体内 named return 参数 `err` 可通过 `:=` 合法重声明，禁止使用 `ferr`/`qerr`/`cerr` 等别名。唯一例外是 defer 闭包内的 `if err :=` 局部变量。
